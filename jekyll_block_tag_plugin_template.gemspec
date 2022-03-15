@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative "lib/jekyll_block_template/version"
+require_relative "lib/jekyll_block_tag_plugin_template/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "jekyll_block_template"
+  spec.name = "jekyll_block_tag_plugin_template"
   spec.version = JekyllBlockTemplate::VERSION
   spec.authors = ["TODO"]
   spec.email = ["TODO@todo.com"]

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'jekyll'
-require_relative '../lib/jekyll_block_template'
+require_relative '../lib/jekyll_block_tag_plugin_template'
 
 RSpec.describe(JekyllBlockTemplate) do
   include JekyllBlockTemplate

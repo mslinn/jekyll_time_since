@@ -27,7 +27,7 @@ function get_new_name {
 }
 
 function rename_files {
-  for FILENAME in "$( find . -type f -name 'jekyll_block_template.*' )"; do
+  for FILENAME in "$( find . -type f -name 'jekyll_block_tag_plugin_template.*' )"; do
     FILETYPE="${FILENAME##*.}"
     mv $f $NEW_NAME.$FILETYPE
   done
@@ -36,11 +36,11 @@ function rename_files {
 function rename_variables {
   THIS_FILENAME="$( realpath $0 )"
   # See https://unix.stackexchange.com/a/196257/142869
-  CAMEL_CASE_OLD="$( echo jekyll_block_template | sed -re "s~(^|_)(.)~\U\2~g" )"
+  CAMEL_CASE_OLD="$( echo jekyll_block_tag_plugin_template | sed -re "s~(^|_)(.)~\U\2~g" )"
   CAMEL_CASE_NEW="$( echo "$1" | sed -re "s~(^|_)(.)~\U\2~g" )"
   for FILENAME in "$( find . -type f  )"; do
     if [[ "$( realpath "$FILENAME" )" != "$THIS_FILENAME" ]]; then
-      sed -i'' "s/jekyll_block_template/$1/g" "$FILENAME"
+      sed -i'' "s/jekyll_block_tag_plugin_template/$1/g" "$FILENAME"
       sed -i'' "s/$CAMEL_CASE_OLD/$CAMEL_CASE_NEW/g" "$FILENAME"
     fi
   done
@@ -82,6 +82,12 @@ function edit_readme {
   sed -i'' "s/git_user_name/$GIT_USER_NAME/g" README.md
 }
 
+function delete_run_this_first {
+  for F in bin/setup README.md; do
+    sed -i'' '/run_this_first/d' "$F"
+  done
+}
+
 function get_git_repo_name {
   do
     read -e -p "What do you want to call the new git repository for this gem? " -i "$GIT_REPO_NAME" GIT_REPO_NAME
@@ -116,6 +122,8 @@ function doit {
 
   export COPYRIGHT_OWNER="$( get_copyright_holder )"
   edit_license
+
+  delete_run_this_first
 
   git remote rename origin upstream
 

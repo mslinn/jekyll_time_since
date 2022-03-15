@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "jekyll_block_template/version"
+require_relative "jekyll_block_tag_plugin_template/version"
 
 # This is the module-level description.
 #

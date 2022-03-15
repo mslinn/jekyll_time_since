@@ -1,10 +1,10 @@
-`jekyll_block_template`
-[![Gem Version](https://badge.fury.io/rb/jekyll_block_template.svg)](https://badge.fury.io/rb/jekyll_block_template)
+`jekyll_block_tag_plugin_template`
+[![Gem Version](https://badge.fury.io/rb/jekyll_block_tag_plugin_template.svg)](https://badge.fury.io/rb/jekyll_block_tag_plugin_template)
 ===========
 
 **TODO Run `bin/run_this_first` then delete this line.**
 
-`jekyll_block_template` is a Jekyll plugin that provides a new Liquid tag called `new_tag_name` and a new tag block called `new_tag_block_name`.
+`jekyll_block_tag_plugin_template` is a Jekyll plugin that provides a new Liquid tag called `new_tag_name` and a new tag block called `new_tag_block_name`.
 The plugin is packaged as a Ruby gem.
 
  * A `new_tag_block_name` block tag that can do magic with its eyes closed.
@@ -29,7 +29,7 @@ More information is available on Mike Slinn's web site about
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'jekyll_block_template'
+gem 'jekyll_block_tag_plugin_template'
 ```
 
 And then execute:
@@ -38,7 +38,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install jekyll_block_template
+    $ gem install jekyll_block_tag_plugin_template
 
 
 ## Usage
@@ -73,7 +73,7 @@ To release a new version,
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/git_user_name/jekyll_block_template.
+Bug reports and pull requests are welcome on GitHub at https://github.com/git_user_name/jekyll_block_tag_plugin_template.
 
 
 ## License
