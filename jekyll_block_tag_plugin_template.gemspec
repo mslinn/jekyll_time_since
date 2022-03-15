@@ -36,7 +36,8 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'debase'
   spec.add_development_dependency 'jekyll', '>= 3.5'
-  spec.add_development_dependency 'rubocop-jekyll', '~> 0.12.0'
+  spec.add_development_dependency 'rubocop', '= 1.18.0'
+  spec.add_development_dependency 'rubocop-jekyll'
   spec.add_development_dependency 'rubocop-rake'
   spec.add_development_dependency 'rubocop-rspec'
   spec.add_development_dependency 'ruby-debug-ide'
