@@ -1,0 +1,129 @@
+#!/bin/bash
+
+function help {
+  echo "Rename the Jekyll template, including directories and files."
+  echo "If the gh cli is installed, a git repo will be created on GitHub (see https://cli.github.com/)."
+  exit 1
+}
+
+# Pass a string to has_spaces; it return 'yes' if the string contains spaces
+function has_spaces {
+  if [[ "$1" =~ ( |\') ]]; then echo yes; fi
+}
+
+function get_new_name {
+  do
+    read -e -p "Please specify the name of this plugin in snake_case: " -i "$NEW_NAME" NEW_NAME
+    if [[ "$( has_spaces $NEW_NAME )" ]]; then
+      echo "The name must not contain spaces. Please try again."
+      unset NEW_NAME
+    fi
+    if [[ -z "$NEW_NAME" ]]; then
+      echo "You must specify a name. Please try again."
+      unset NEW_NAME
+    fi
+  while [[ -z "$NEW_NAME" ]]
+  echo $NEW_NAME
+}
+
+function rename_files {
+  for FILENAME in "$( find . -type f -name 'jekyll_block_template.*' )"; do
+    FILETYPE="${FILENAME##*.}"
+    mv $f $NEW_NAME.$FILETYPE
+  done
+}
+
+function rename_variables {
+  THIS_FILENAME="$( realpath $0 )"
+  # See https://unix.stackexchange.com/a/196257/142869
+  CAMEL_CASE_OLD="$( echo jekyll_block_template | sed -re "s~(^|_)(.)~\U\2~g" )"
+  CAMEL_CASE_NEW="$( echo "$1" | sed -re "s~(^|_)(.)~\U\2~g" )"
+  for FILENAME in "$( find . -type f  )"; do
+    if [[ "$( realpath "$FILENAME" )" != "$THIS_FILENAME" ]]; then
+      sed -i'' "s/jekyll_block_template/$1/g" "$FILENAME"
+      sed -i'' "s/$CAMEL_CASE_OLD/$CAMEL_CASE_NEW/g" "$FILENAME"
+    fi
+  done
+}
+
+function get_copyright_holder {
+  do
+    read -e -p "Please specify the name of copyright holder for this Jekyll plugin: " -i "$COPYRIGHT_OWNER" COPYRIGHT_OWNER
+    if [[ -z "$COPYRIGHT_OWNER" ]]; then
+      echo "You must specify a name. Please try again."
+      unset COPYRIGHT_OWNER
+    fi
+  while [[ -z "$COPYRIGHT_OWNER" ]]
+  echo "$COPYRIGHT_OWNER"
+}
+
+function edit_license {
+  sed -i'' "s/2022/$( date +%Y )/g" LICENSE.txt
+  sed -i'' "s/COPYRIGHT_OWNER/$COPYRIGHT_OWNER/g" LICENSE.txt
+}
+
+function get_git_user_name {
+  do
+    read -e -p "What is your git user name? " -i "$GIT_USER_NAME" GIT_USER_NAME
+    if [[ -z "$GIT_USER_NAME" ]]; then
+      echo "You must specify a git user name. Please try again."
+      unset GIT_USER_NAME
+    fi
+
+    if [[ "$( has_spaces $NEW_NAME )" ]]; then
+      echo "The name must not contain spaces. Please try again."
+      unset NEW_NAME
+    fi
+  while [[ -z "$GIT_USER_NAME" ]]
+  echo "$GIT_USER_NAME"
+}
+
+function edit_readme {
+  sed -i'' "s/git_user_name/$GIT_USER_NAME/g" README.md
+}
+
+function get_git_repo_name {
+  do
+    read -e -p "What do you want to call the new git repository for this gem? " -i "$GIT_REPO_NAME" GIT_REPO_NAME
+    if [[ -z "$GIT_REPO_NAME" ]]; then
+      echo "If you do not want to specify a git repo name, press Control-C, or try again."
+      unset GIT_REPO_NAME
+    fi
+
+    if [[ "$( has_spaces $GIT_REPO_NAME )" ]]; then
+      echo "The git repo name must not contain spaces. Please try again."
+      unset GIT_REPO_NAME
+    fi
+  while [[ -z "$GIT_REPO_NAME" ]]
+  echo "$GIT_REPO_NAME"
+}
+
+function create_repo {
+  # See https://cli.github.com/manual/gh_repo_create
+  if [[ "$( which gh )" ]]; then
+    gh repo create "$GIT_REPO_NAME" --public
+    echo "A public git repository called $GIT_REPO_NAME has been created. You can change its visibility before committing if you want."
+  fi
+}
+
+
+function doit {
+  cd "$( git rev-parse --show-toplevel )"
+
+  export NEW_NAME="$( get_new_name )"
+  rename_files
+  rename_variables
+
+  export COPYRIGHT_OWNER="$( get_copyright_holder )"
+  edit_license
+
+  git remote rename origin upstream
+
+  export GIT_USER_NAME="$( get_git_user_name )"
+  edit_readme
+
+  export GIT_REPO_NAME="$( get_git_user_name )"
+  create_repo
+}
+
+# doit
