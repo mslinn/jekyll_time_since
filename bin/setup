@@ -4,5 +4,6 @@ set -euo pipefail
 IFS=$'\n\t'
 set -vx
 
+if [[ -z "$( which bundle )" ]]; then gem install bundler; fi
 bundle install
 system "#{__dir__}/run_this_first"
