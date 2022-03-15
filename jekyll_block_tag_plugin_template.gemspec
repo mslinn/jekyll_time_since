@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require_relative 'lib/jekyll_block_tag_plugin_template/version'
+require_relative "lib/jekyll_block_tag_plugin_template/version"
 
+# rubocop:disable Metrics/BlockLength, Style/StringLiterals
 Gem::Specification.new do |spec|
   spec.name = 'jekyll_block_tag_plugin_template'
   spec.version = JekyllBlockTemplate::VERSION
@@ -26,11 +27,11 @@ Gem::Specification.new do |spec|
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject do |f|
-      (f == __FILE__) || f.match(%r{\A(?:(?:bin|test|spec|features)/|\.(?:git|travis|circleci)|appveyor)})
+      (f == __FILE__) || f.match(%r!\A(?:(?:bin|test|spec|features)/|\.(?:git|travis|circleci)|appveyor)!)
     end
   end
   spec.bindir = 'exe'
-  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+  spec.executables = spec.files.grep(%r!\Aexe/!) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
   spec.add_development_dependency 'debase'
@@ -40,3 +41,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop-rspec'
   spec.add_development_dependency 'ruby-debug-ide'
 end
+# rubocop:enable Metrics/BlockLength, Style/StringLiterals
