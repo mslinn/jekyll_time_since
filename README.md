@@ -2,7 +2,10 @@
 [![Gem Version](https://badge.fury.io/rb/jekyll_block_template.svg)](https://badge.fury.io/rb/jekyll_block_template)
 ===========
 
-This is a Jekyll plugin that provides a new Liquid tag called `new_tag_name` and a new tag block called `new_tag_block_name`.
+**TODO Run `bin/run_this_first` then delete this line.**
+
+`jekyll_block_template` is a Jekyll plugin that provides a new Liquid tag called `new_tag_name` and a new tag block called `new_tag_block_name`.
+The plugin is packaged as a Ruby gem.
 
  * A `new_tag_block_name` block tag that can do magic with its eyes closed.
    ```
@@ -12,12 +15,13 @@ This is a Jekyll plugin that provides a new Liquid tag called `new_tag_name` and
    ```
  * A `new_tag_name` tag that can turn on a dime and leave 15 cents change.
    ```
-   {% new_tag_name [arguments]%}Contents of new_tag_name tag
+   {% new_tag_name Contents of new_tag_name tag%}
    ```
 
+
 ## Additional Information
-More information is available on my web site about
-[my Jekyll plugins](https://www.mslinn.com/blog/2020/10/03/jekyll-plugins.html).
+More information is available on Mike Slinn's web site about
+[Jekyll plugins](https://www.mslinn.com/blog/index.html#Jekyll).
 
 
 ## Installation
