@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "jekyll_block_tag_plugin_template/version"
+require "jekyll_logger_factory"
 
 # This is the module-level description.
 #
@@ -30,13 +31,14 @@ module JekyllBlockTemplate
     # @param tokens [Liquid::ParseContext] parsed and tokenized command line
     # @return [void]
     def initialize(tag_name, arguments, tokens)
-      super(tag_name, arguments, tokens)
+      super
+      MyBlock.logger = LoggerFactory.new("my_block_template", site.config)
       Jekyll.logger.debug <<~HEREDOC
         tag_name [#{tag_name.class}] = '#{tag_name}' [#{tag_name.class}]
         arguments [#{arguments.class}] = '#{arguments}'
       HEREDOC
       @arguments = arguments
-      @arguments = '' if @arguments.nil? || @arguments.empty?
+      @arguments = "" if @arguments.nil? || @arguments.empty?
     end
 
     # Method prescribed by the Jekyll plugin lifecycle.
@@ -46,7 +48,7 @@ module JekyllBlockTemplate
 
       @site = context.registers[:site]
       @config = @site.config
-      @mode = @config['env']['JEKYLL_ENV']
+      @mode = @config["env"]["JEKYLL_ENV"]
       @page = context.registers[:page]
 
       Jekyll.logger.debug <<~HEREDOC
@@ -69,4 +71,4 @@ module JekyllBlockTemplate
   end
 end
 
-Liquid::Template.register_tag(JekyllBlockTemplate.log.progname, JekyllBlockTemplate::MyBlock)
+Liquid::Template.register_tag(JekyllBlockTemplate::MyBlock.logger.progname, JekyllBlockTemplate::MyBlock)

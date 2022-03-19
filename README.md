@@ -55,9 +55,24 @@ Install development dependencies like this:
 $ BUNDLE_WITH="development" bundle install
 ```
 
-To install this gem onto your local machine, run:
+To build and install this gem onto your local machine, run:
 ```shell
 $ bundle exec rake install
+jekyll_block_tag_plugin_template 0.1.0 built to pkg/jekyll_block_tag_plugin_template-0.1.0.gem.
+jekyll_block_tag_plugin_template (0.1.0) installed.
+
+$ gem info jekyll_block_tag_plugin_template
+
+*** LOCAL GEMS ***
+
+jekyll_block_tag_plugin_template (0.1.0)
+    Author: Firstname Lastname
+    Homepage:
+    https://github.com/username/jekyll_block_tag_plugin_template
+    License: MIT
+    Installed at: /home/mslinn/.gems
+
+    Write a short summary, because RubyGems requires one.
 ```
 
 To release a new version,
