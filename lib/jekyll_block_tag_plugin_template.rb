@@ -20,9 +20,7 @@ require "jekyll_logger_factory"
 #   bundle exec jekyll build --quiet
 #   JEKYLL_ENV=development bundle exec jekyll serve --quiet
 
-module JekyllBlockTemplate
-  class Error < StandardError; end
-
+module JekyllBlockTagTemplate
   # This class implements the Jekyll tag functionality
   class MyBlock < Liquid::Block
     # Constructor.
@@ -71,4 +69,4 @@ module JekyllBlockTemplate
   end
 end
 
-Liquid::Template.register_tag(JekyllBlockTemplate::MyBlock.logger.progname, JekyllBlockTemplate::MyBlock)
+Liquid::Template.register_tag(JekyllBlockTagTemplate::MyBlock.logger.progname, JekyllBlockTemplate::MyBlock)
