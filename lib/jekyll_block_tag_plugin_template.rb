@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "jekyll_block_tag_plugin_template/version"
-require "jekyll_logger_factory"
+require "jekyll_plugin_logger"
 
 # This is the module-level description.
 #
@@ -20,7 +20,7 @@ require "jekyll_logger_factory"
 #   bundle exec jekyll build --quiet
 #   JEKYLL_ENV=development bundle exec jekyll serve --quiet
 
-module JekyllBlockTagTemplate
+module Jekyll
   # This class implements the Jekyll tag functionality
   class MyBlock < Liquid::Block
     # Constructor.
@@ -32,8 +32,8 @@ module JekyllBlockTagTemplate
       super
       MyBlock.logger = LoggerFactory.new("my_block_template", site.config)
       Jekyll.logger.debug <<~HEREDOC
-        tag_name [#{tag_name.class}] = '#{tag_name}' [#{tag_name.class}]
-        arguments [#{arguments.class}] = '#{arguments}'
+        tag_name [#{tag_name.class}] = "#{tag_name}" [#{tag_name.class}]
+        arguments [#{arguments.class}] = "#{arguments}"
       HEREDOC
       @arguments = arguments
       @arguments = "" if @arguments.nil? || @arguments.empty?
@@ -50,9 +50,9 @@ module JekyllBlockTagTemplate
       @page = context.registers[:page]
 
       Jekyll.logger.debug <<~HEREDOC
-        mode='#{@mode}'
-        page.path='#{@page.path}'
-        page.url='#{@page.url}'
+        mode="#{@mode}"
+        page.path="#{@page.path}"
+        page.url="#{@page.url}"
       HEREDOC
 
       # Compute the return value of this Jekyll tag
@@ -67,6 +67,7 @@ module JekyllBlockTagTemplate
 
     # Your private methods go here
   end
+  info { "Loaded jekyll_block_tag_plugin_template plugin." }
 end
 
-Liquid::Template.register_tag(JekyllBlockTagTemplate::MyBlock.logger.progname, JekyllBlockTemplate::MyBlock)
+Liquid::Template.register_tag("jekyll_block_tag_plugin_template", Jekyll::MyBlock)

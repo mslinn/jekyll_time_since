@@ -29,7 +29,9 @@ More information is available on Mike Slinn's web site about
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'jekyll_block_tag_plugin_template'
+group :jekyll_plugins do
+  gem 'jekyll_block_tag_plugin_template'
+end
 ```
 
 And then execute:
