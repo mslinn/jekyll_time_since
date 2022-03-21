@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
-require_relative "jekyll_block_tag_plugin_template/version"
 require "jekyll_plugin_logger"
+require_relative "jekyll_block_tag_plugin_template/version"
+
+module JekyllPluginBlockTagTemplate
+  PLUGIN_NAME = "jekyll_block_tag_plugin_template"
+end
 
 # This is the module-level description.
 #
@@ -30,8 +34,7 @@ module Jekyll
     # @return [void]
     def initialize(tag_name, arguments, tokens)
       super
-      MyBlock.logger = LoggerFactory.new("my_block_template", site.config)
-      Jekyll.logger.debug <<~HEREDOC
+      Jekyll.debug <<~HEREDOC
         tag_name [#{tag_name.class}] = "#{tag_name}" [#{tag_name.class}]
         arguments [#{arguments.class}] = "#{arguments}"
       HEREDOC
@@ -67,7 +70,7 @@ module Jekyll
 
     # Your private methods go here
   end
-  info { "Loaded jekyll_block_tag_plugin_template plugin." }
+  info { "Loaded #{JekyllPluginBlockTagTemplate::PLUGIN_NAME} v#{JekyllBlockTagTemplate::VERSION} plugin." }
 end
 
-Liquid::Template.register_tag("jekyll_block_tag_plugin_template", Jekyll::MyBlock)
+Liquid::Template.register_tag(JekyllPluginBlockTagTemplate::PLUGIN_NAME, Jekyll::MyBlock)
