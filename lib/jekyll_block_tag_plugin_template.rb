@@ -34,7 +34,8 @@ module Jekyll
     # @return [void]
     def initialize(tag_name, arguments, tokens)
       super
-      Jekyll.debug <<~HEREDOC
+      @logger = PluginLogger.new(self)
+      @logger.debug <<~HEREDOC
         tag_name [#{tag_name.class}] = "#{tag_name}" [#{tag_name.class}]
         arguments [#{arguments.class}] = "#{arguments}"
       HEREDOC
@@ -52,7 +53,7 @@ module Jekyll
       @mode = @config["env"]["JEKYLL_ENV"]
       @page = context.registers[:page]
 
-      Jekyll.logger.debug <<~HEREDOC
+      @logger.debug <<~HEREDOC
         mode="#{@mode}"
         page.path="#{@page.path}"
         page.url="#{@page.url}"
@@ -66,11 +67,9 @@ module Jekyll
       HEREDOC
     end
 
-    private
-
-    # Your private methods go here
+    private # Your private methods go here
   end
-  info { "Loaded #{JekyllPluginBlockTagTemplate::PLUGIN_NAME} v#{JekyllBlockTagTemplate::VERSION} plugin." }
 end
 
+PluginMetaLogger.instance.info { "Loaded #{JekyllPluginBlockTagTemplate::PLUGIN_NAME} v#{JekyllBlockTagTemplate::VERSION} plugin." }
 Liquid::Template.register_tag(JekyllPluginBlockTagTemplate::PLUGIN_NAME, Jekyll::MyBlock)
