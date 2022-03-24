@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "jekyll_plugin_logger"
 require_relative "jekyll_block_tag_plugin_template/version"
 
 module JekyllPluginBlockTagTemplate
@@ -30,9 +29,9 @@ module Jekyll
     # Constructor.
     # @param tag_name [String] the name of the tag, which we already know.
     # @param text [Hash, String, Liquid::Tag::Parser] the arguments from the tag.
-    # @param tokens [Liquid::ParseContext] parsed and tokenized command line
+    # @param _tokens [Liquid::ParseContext] parsed and tokenized command line
     # @return [void]
-    def initialize(tag_name, arguments, tokens)
+    def initialize(tag_name, arguments, _tokens)
       super
       @logger = PluginLogger.new(self)
       @logger.debug <<~HEREDOC
@@ -71,5 +70,7 @@ module Jekyll
   end
 end
 
-PluginMetaLogger.instance.info { "Loaded #{JekyllPluginBlockTagTemplate::PLUGIN_NAME} v#{JekyllBlockTagTemplate::VERSION} plugin." }
-Liquid::Template.register_tag(JekyllPluginBlockTagTemplate::PLUGIN_NAME, Jekyll::MyBlock)
+Jekyll::Hooks.register(:site, :after_reset) do |site|
+  PluginMetaLogger.instance.info { "Loaded #{JekyllPluginBlockTagTemplate::PLUGIN_NAME} v#{JekyllBlockTagTemplate::VERSION} plugin." }
+  Liquid::Template.register_tag(JekyllPluginBlockTagTemplate::PLUGIN_NAME, Jekyll::MyBlock)
+end
