@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "jekyll_plugin_logger"
 require_relative "lib/jekyll_block_tag_plugin_template/version"
 
 # rubocop:disable Metrics/BlockLength
