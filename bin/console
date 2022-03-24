@@ -1,18 +1,19 @@
 #!/usr/bin/env ruby
+
 # frozen_string_literal: true
 
-require 'fileutils'
+require "fileutils"
+require "bundler/setup"
 
 gemspec_name = "jekyll_block_tag_plugin_template.gemspec"
-lines = File.readlines(gemspec_name, chomp: true)
+lines = File.readlines(gemspec_name, :chomp => true)
 if lines.find { |line| line.match?(/homepage *= *"TODO/) }
   abort <<~END_ERR
-  Error: #{gemspec_name} must be edited and the TODO items replaced with information.
-  Executing bin/run_this_first will perform some of the edits automatically.
+    Error: #{gemspec_name} must be edited and the TODO items replaced with information.
+    Executing bin/run_this_first will perform some of the edits automatically.
   END_ERR
 end
 
-require "bundler/setup"
 require gemspec_name.delete_suffix ".gemspec"
 
 # You can add fixtures and/or initialization code here to make experimenting

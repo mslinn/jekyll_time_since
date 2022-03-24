@@ -33,7 +33,7 @@ module Jekyll
     # @return [void]
     def initialize(tag_name, arguments, _tokens)
       super
-      @logger = PluginLogger.new(self)
+      @logger = PluginMetaLogger.new_logger(self)
       @logger.debug <<~HEREDOC
         tag_name [#{tag_name.class}] = "#{tag_name}" [#{tag_name.class}]
         arguments [#{arguments.class}] = "#{arguments}"
@@ -70,7 +70,5 @@ module Jekyll
   end
 end
 
-Jekyll::Hooks.register(:site, :after_reset) do |site|
-  PluginMetaLogger.instance.info { "Loaded #{JekyllPluginBlockTagTemplate::PLUGIN_NAME} v#{JekyllBlockTagTemplate::VERSION} plugin." }
-  Liquid::Template.register_tag(JekyllPluginBlockTagTemplate::PLUGIN_NAME, Jekyll::MyBlock)
-end
+PluginMetaLogger.instance.info { "Loaded #{JekyllPluginBlockTagTemplate::PLUGIN_NAME} v#{JekyllBlockTagTemplate::VERSION} plugin." }
+Liquid::Template.register_tag(JekyllPluginBlockTagTemplate::PLUGIN_NAME, Jekyll::MyBlock)
