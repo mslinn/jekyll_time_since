@@ -34,7 +34,7 @@ module Jekyll
     # @return [void]
     def initialize(tag_name, arguments, _tokens)
       super
-      @logger = PluginMetaLogger.new_logger(self)
+      @logger = PluginMetaLogger.instance.new_logger(self)
       @logger.debug <<~HEREDOC
         tag_name [#{tag_name.class}] = "#{tag_name}" [#{tag_name.class}]
         arguments [#{arguments.class}] = "#{arguments}"
