@@ -39,24 +39,19 @@ module Jekyll
       @logger = PluginMetaLogger.instance.new_logger(self)
       @logger.level = "debug" # Delete this line for production
 
-      @argument_string = argument_string
-      @argument_string = "" if @argument_string.nil? || @argument_string.empty?
-
       argv = Shellwords.split argument_string # Parses arguments like Posix shells do
-      @params = KeyValueParser.new.parse(argv) # key/value pairs, default value for non-existant keys is nil
-
-      @param1 = @params[:param1] # Example of obtaining the value of parameter param1
-      @param_x = @params[:not_present] # The value of parameters that are present is nil, but displays as the empty string
+      params = KeyValueParser.new.parse(argv) # extract key/value pairs, default value for non-existant keys is nil
+      @param1 = params[:param1] # Example of obtaining the value of parameter param1
+      @param_x = params[:not_present] # The value of parameters that are present is nil, but displays as the empty string
 
       @logger.debug do
         <<~HEREDOC
           tag_name = '#{tag_name}'
-          @arguments = '#{@argument_string}'
-          @argument_string = '#{@argument_string}'
+          argument_string = '#{argument_string}'
           @param1 = '#{@param1}'
           @param_x = '#{@param_x}'
-          @params =
-            #{@params.map { |k, v| "#{k} = #{v}" }.join("\n  ")}
+          params =
+            #{params.map { |k, v| "#{k} = #{v}" }.join("\n  ")}
         HEREDOC
       end
     end
