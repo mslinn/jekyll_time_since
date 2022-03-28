@@ -6,16 +6,16 @@ require "shellwords"
 require_relative "jekyll_block_tag_plugin_template/version"
 
 module JekyllPluginBlockTagTemplate
-  PLUGIN_NAME = "jekyll_block_tag_plugin_template"
+  PLUGIN_NAME = "block_tag_template"
 end
 
 # This is the module-level description.
 #
 # @example Heading for this example
 #   Describe what this example does
-#   {% my_block_template "parameter" %}
+#   {% block_tag_template "parameter" %}
 #     Hello, world!
-#   {% endmy_block_template %}
+#   {% endblock_tag_template %}
 #
 # The Jekyll log level defaults to :info, which means all the Jekyll.logger statements below will not generate output.
 # You can control the log level when you start Jekyll.
@@ -30,25 +30,35 @@ module Jekyll
   # This class implements the Jekyll tag functionality
   class MyBlock < Liquid::Block
     # @param tag_name [String] the name of the tag, which we already know.
-    # @param text [Hash, String, Liquid::Tag::Parser] the arguments from the tag.
-    # @param _tokens [Liquid::ParseContext] parsed and tokenized command line
+    # @param argument_string [String] the arguments from the tag, as a single string.
+    # @param _parse_context [Liquid::ParseContext] Liquid variables name/value pairs accessible in the calling page
+    #        See https://www.rubydoc.info/gems/liquid/Liquid/ParseContext
     # @return [void]
-    def initialize(tag_name, arguments, tokens)
+    def initialize(tag_name, argument_string, _parse_context)
       super
       @logger = PluginMetaLogger.instance.new_logger(self)
+      @logger.level = "debug" # Delete this line for production
 
-      @arguments = arguments
-      @arguments = "" if @arguments.nil? || @arguments.empty?
+      @argument_string = argument_string
+      @argument_string = "" if @argument_string.nil? || @argument_string.empty?
 
-      argv = Shellwords.split tokens.join(" ") # Parses arguments like Posix shells do
-      @params = KeyValueParser.new.parse(argv) # key/value pairs
+      argv = Shellwords.split argument_string # Parses arguments like Posix shells do
+      @params = KeyValueParser.new.parse(argv) # key/value pairs, default value is false
 
-      @logger.debug <<~HEREDOC
-        tag_name [#{tag_name.class}] = "#{tag_name}" [#{tag_name.class}]
-        @arguments [#{@arguments.class}] = "#{@arguments}"
-        @params =
-          #{@params.map { |k, v| "#{k} = #{v}" }.join("\n  ")}
-      HEREDOC
+      @param1 = @params[:param1] # Example of obtaining the value of a parameter
+      @param_x = @params[:not_present] # The value of parameters that are present is nil, but displays as the empty string
+
+      @logger.debug do
+        <<~HEREDOC
+          tag_name = '#{tag_name}'
+          @arguments = '#{@argument_string}'
+          @argument_string = '#{@argument_string}'
+          @param1 = '#{@param1}'
+          @param_x = '#{@param_x}'
+          @params =
+            #{@params.map { |k, v| "#{k} = #{v}" }.join("\n  ")}
+        HEREDOC
+      end
     end
 
     # Method prescribed by the Jekyll plugin lifecycle.
