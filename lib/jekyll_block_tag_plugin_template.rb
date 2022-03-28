@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "jekyll_plugin_logger"
+require "key_value_parser"
+require "shellwords"
 require_relative "jekyll_block_tag_plugin_template/version"
 
 module JekyllPluginBlockTagTemplate
@@ -27,20 +29,26 @@ end
 module Jekyll
   # This class implements the Jekyll tag functionality
   class MyBlock < Liquid::Block
-    # Constructor.
     # @param tag_name [String] the name of the tag, which we already know.
     # @param text [Hash, String, Liquid::Tag::Parser] the arguments from the tag.
     # @param _tokens [Liquid::ParseContext] parsed and tokenized command line
     # @return [void]
-    def initialize(tag_name, arguments, _tokens)
+    def initialize(tag_name, arguments, tokens)
       super
       @logger = PluginMetaLogger.instance.new_logger(self)
-      @logger.debug <<~HEREDOC
-        tag_name [#{tag_name.class}] = "#{tag_name}" [#{tag_name.class}]
-        arguments [#{arguments.class}] = "#{arguments}"
-      HEREDOC
+
       @arguments = arguments
       @arguments = "" if @arguments.nil? || @arguments.empty?
+
+      argv = Shellwords.split tokens.join(" ") # Parses arguments like Posix shells do
+      @params = KeyValueParser.new.parse(argv) # key/value pairs
+
+      @logger.debug <<~HEREDOC
+        tag_name [#{tag_name.class}] = "#{tag_name}" [#{tag_name.class}]
+        @arguments [#{@arguments.class}] = "#{@arguments}"
+        @params =
+          #{@params.map { |k, v| "#{k} = #{v}" }.join("\n  ")}
+      HEREDOC
     end
 
     # Method prescribed by the Jekyll plugin lifecycle.

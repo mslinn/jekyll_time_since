@@ -12,6 +12,8 @@ RSpec.describe(JekyllPluginBlockTagTemplate) do
 
   it "parses arguments" do
     options = KeyValueParser.new.parse(argv)
+    # puts options.map { |k, v| "#{k} = #{v}" }.join("\n")
+
     expect(options[:param0]).to eq(true)
     expect(options[:param1]).to eq("value1")
     expect(options[:param2]).to eq("value2")
