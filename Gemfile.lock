@@ -4,6 +4,7 @@ PATH
     jekyll_block_tag_plugin_template (0.1.0)
       jekyll (>= 3.5.0)
       jekyll_plugin_logger
+      key-value-parser
 
 GEM
   remote: https://rubygems.org/
@@ -47,6 +48,7 @@ GEM
       listen (~> 3.0)
     jekyll_plugin_logger (2.0.0)
       jekyll (>= 3.5.0)
+    key-value-parser (0.0.2)
     kramdown (2.3.1)
       rexml
     kramdown-parser-gfm (1.1.0)

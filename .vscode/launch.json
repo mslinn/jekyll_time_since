@@ -5,6 +5,19 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug test.rb",
+      "program": "${workspaceRoot}/test.rb",
+      "type": "Ruby",
+      "request": "launch",
+    },
+    {
+      "args": ["param1=value1", "param2='value2'", "param3=\"value3\""],
+      "name": "Debug test.rb with args",
+      "program": "${workspaceRoot}/test.rb",
+      "type": "Ruby",
+      "request": "launch",
+    },
+    {
       "cwd": "${workspaceRoot}",
       "name": "Attach rdebug-ide",
       "request": "attach",
