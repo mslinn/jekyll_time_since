@@ -9,10 +9,9 @@ RSpec.describe(JekyllPluginBlockTagTemplate) do
   include JekyllPluginBlockTagTemplate
 
   argv = Shellwords.split "param0 param1=value1 param2='value2' param3=\"value3\""
-  parser = KeyValueParser.new
 
   it "parses arguments" do
-    options = parser.parse(argv)
+    options = KeyValueParser.new.parse(argv)
     expect(options[:param0]).to eq(true)
     expect(options[:param1]).to eq("value1")
     expect(options[:param2]).to eq("value2")
