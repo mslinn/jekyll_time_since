@@ -3,6 +3,14 @@
 # frozen_string_literal: true
 
 require "fileutils"
+
+# Install os if not already installed
+begin
+  gem "os"
+rescue Gem::LoadError
+  Gem.install("tty-prompt")
+  gem "tty-prompt"
+end
 require "os"
 
 # Install tty-prompt if not already installed
@@ -23,9 +31,8 @@ rescue Gem::LoadError
 end
 require "git"
 
-class RunThisFirst # rubocop:disable Jekyll/NoPutsAllowed
+class ScriptHelper
   def initialize
-    @old_name = "jekyll_block_tag_plugin_template"
     @prompt = TTY::Prompt.new
   end
 
@@ -35,6 +42,27 @@ class RunThisFirst # rubocop:disable Jekyll/NoPutsAllowed
     else
       @prompt.ask(prompt)
     end
+  end
+
+  def edit_contents(filename, edits)
+    contents = File.read(filename).gsub(%r!\w!, edits)
+    File.write(filename, contents)
+  end
+
+  def run(command)
+    `#{command}`.chomp
+  end
+
+  def to_camel_case(string)
+    string.split("_").collect(&:capitalize).join
+  end
+
+end
+
+class RunThisFirst < ScriptHelper
+  def initialize
+    super
+    @old_name = "jekyll_block_tag_plugin_template"
   end
 
   def create_repo
@@ -79,11 +107,6 @@ class RunThisFirst # rubocop:disable Jekyll/NoPutsAllowed
 
     @git_user_name = obtain_git_user_name
     create_repo @git_user_name
-  end
-
-  def edit_contents(filename, edits)
-    contents = File.read(filename).gsub(%r!\w!, edits)
-    File.write(filename, contents)
   end
 
   def edit_license
@@ -204,19 +227,14 @@ class RunThisFirst # rubocop:disable Jekyll/NoPutsAllowed
       end
   end
 
-  def run(command)
-    `#{command}`.chomp
-  end
-
-  def to_camel_case(string)
-    string.split("_").collect(&:capitalize).join
-  end
-
   def verify_logged_in
-    unless run("which gh")
-      puts "gh is not installed, so you will have to push the new git repo to the hosting service of your choice"
-      if @prompt.yes?("Do you want to install it before continuing?")
-        puts "Be sure to run 'gh auth' to log in before rerunning this command."
+    if run("which gh").empty?
+      puts <<~MSG
+        This project needs to be pushed to a new git repo at a hosting service like GitHub.
+        The gh cli would need to be installed if you want this script to create a repo for you on GitHub.
+      MSG
+      if @prompt.yes?("Do you want to install the gh cli before continuing?")
+        puts "Be sure to run 'gh auth' to log in before rerunning this script."
         system(OS.open_file_command, "https://cli.github.com/")
         exit
       end
@@ -226,6 +244,7 @@ class RunThisFirst # rubocop:disable Jekyll/NoPutsAllowed
 end
 
 run_this_first = RunThisFirst.new
+# puts run_this_first.obtain_copyright_holder
+# puts run_this_first.obtain_new_name("old_name")
+run_this_first.verify_logged_in
 # run_this_first.doit
-puts run_this_first.obtain_copyright_holder
-puts run_this_first.obtain_new_name("old_name")

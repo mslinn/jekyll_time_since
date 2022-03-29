@@ -14,4 +14,7 @@ Layout/LineLength:
   Max: 150
 
 # Gemspec/RequireMFA:
-#   enable: false
+#   Enabled: false
+
+Jekyll/NoPutsAllowed:
+  Enabled: false
