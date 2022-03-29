@@ -37,7 +37,7 @@ module Jekyll
     def initialize(tag_name, argument_string, _parse_context)
       super
       @logger = PluginMetaLogger.instance.new_logger(self)
-      @logger.level = "debug" # Delete this line for production
+      # @logger.level = "debug" # Comment this line for production; it overrides any value in _config.yml
 
       argv = Shellwords.split argument_string # Parses arguments like Posix shells do
       params = KeyValueParser.new.parse(argv) # extract key/value pairs, default value for non-existant keys is nil

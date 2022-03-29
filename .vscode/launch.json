@@ -5,6 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "args": [],
+      "name": "Debug run_this_first",
+      "program": "${workspaceRoot}/bin/run_this_first",
+      "type": "Ruby",
+      "request": "launch",
+    },
+    {
       "name": "Debug test.rb",
       "program": "${workspaceRoot}/test.rb",
       "type": "Ruby",

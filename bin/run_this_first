@@ -1,137 +1,231 @@
-#!/bin/bash
+#!/usr/bin/env ruby
 
-function help {
-  echo "Rename the Jekyll template, including directories and files."
-  echo "If the gh cli is installed, a git repo will be created on GitHub (see https://cli.github.com/)."
-  exit 1
-}
+# frozen_string_literal: true
 
-# Pass a string to has_spaces; it return 'yes' if the string contains spaces
-function has_spaces {
-  if [[ "$1" =~ ( |\') ]]; then echo yes; fi
-}
+require "fileutils"
+require "os"
 
-function get_new_name {
-  do
-    read -e -p "Please specify the name of this plugin in snake_case: " -i "$NEW_NAME" NEW_NAME
-    if [[ "$( has_spaces $NEW_NAME )" ]]; then
-      echo "The name must not contain spaces. Please try again."
-      unset NEW_NAME
-    fi
-    if [[ -z "$NEW_NAME" ]]; then
-      echo "You must specify a name. Please try again."
-      unset NEW_NAME
-    fi
-  while [[ -z "$NEW_NAME" ]]
-  echo $NEW_NAME
-}
+# Install tty-prompt if not already installed
+begin
+  gem "tty-prompt"
+rescue Gem::LoadError
+  Gem.install("tty-prompt")
+  gem "tty-prompt"
+end
+require "tty-prompt"
 
-function rename_files {
-  for FILENAME in "$( find . -type f -name 'jekyll_block_tag_plugin_template.*' )"; do
-    FILETYPE="${FILENAME##*.}"
-    mv $f $NEW_NAME.$FILETYPE
-  done
-}
+# Install git if not already installed
+begin
+  gem "git"
+rescue Gem::LoadError
+  Gem.install("git")
+  gem "git"
+end
+require "git"
 
-function rename_variables {
-  THIS_FILENAME="$( realpath $0 )"
-  # See https://unix.stackexchange.com/a/196257/142869
-  CAMEL_CASE_OLD="$( echo jekyll_block_tag_plugin_template | sed -re "s~(^|_)(.)~\U\2~g" )"
-  CAMEL_CASE_NEW="$( echo "$1" | sed -re "s~(^|_)(.)~\U\2~g" )"
-  for FILENAME in "$( find . -type f  )"; do
-    if [[ "$( realpath "$FILENAME" )" != "$THIS_FILENAME" ]]; then
-      sed -i'' "s/jekyll_block_tag_plugin_template/$1/g" "$FILENAME"
-      sed -i'' "s/$CAMEL_CASE_OLD/$CAMEL_CASE_NEW/g" "$FILENAME"
-    fi
-  done
-}
+class RunThisFirst # rubocop:disable Jekyll/NoPutsAllowed
+  def initialize
+    @old_name = "jekyll_block_tag_plugin_template"
+    @prompt = TTY::Prompt.new
+  end
 
-function get_copyright_holder {
-  do
-    read -e -p "Please specify the name of copyright holder for this Jekyll plugin: " -i "$COPYRIGHT_OWNER" COPYRIGHT_OWNER
-    if [[ -z "$COPYRIGHT_OWNER" ]]; then
-      echo "You must specify a name. Please try again."
-      unset COPYRIGHT_OWNER
-    fi
-  while [[ -z "$COPYRIGHT_OWNER" ]]
-  echo "$COPYRIGHT_OWNER"
-}
+  def ask(prompt, default_value = nil)
+    if default_value
+      @prompt.ask(prompt, :value => default_value)
+    else
+      @prompt.ask(prompt)
+    end
+  end
 
-function edit_license {
-  sed -i'' "s/2022/$( date +%Y )/g" LICENSE.txt
-  sed -i'' "s/COPYRIGHT_OWNER/$COPYRIGHT_OWNER/g" LICENSE.txt
-}
+  def create_repo
+    unless run("which gh")
+      puts "gh is not installed, so you will have to push the new git repo to the hosting service of your choice"
+      exit
+    end
+    unless run("gh auth status").include? "Logged in to github.com"
+      puts "gh is not logged in, so you will have to push the new git repo to the hosting service of your choice"
+    end
+    if @prompt.yes?("Create a GitHub project for this new git repository?")
+      visibility = @prompt.select("Public or private?", %w(public private))
+      `gh repo create #{@git_repo_name} --#{visibility}` # See https://cli.github.com/manual/gh_repo_create
+      puts "A #{visibility} git repository called #{git_repo_name} has been created."
+    end
+  end
 
-function get_git_user_name {
-  do
-    read -e -p "What is your git user name? " -i "$GIT_USER_NAME" GIT_USER_NAME
-    if [[ -z "$GIT_USER_NAME" ]]; then
-      echo "You must specify a git user name. Please try again."
-      unset GIT_USER_NAME
-    fi
+  def delete_run_this_first
+    ["bin/setup", "README.md"].each do |filename|
+      modified = File.readlines(filename).reject { |f| %r!run_this_first!.match(f) }
+      File.write(filename, modified.join)
+    end
+  end
 
-    if [[ "$( has_spaces $NEW_NAME )" ]]; then
-      echo "The name must not contain spaces. Please try again."
-      unset NEW_NAME
-    fi
-  while [[ -z "$GIT_USER_NAME" ]]
-  echo "$GIT_USER_NAME"
-}
+  def doit
+    Dir.chdir `git rev-parse --show-toplevel`.chomp
 
-function edit_readme {
-  sed -i'' "s/git_user_name/$GIT_USER_NAME/g" README.md
-}
+    @new_name = obtain_new_name
+    rename_directories(@old_name, @new_name)
+    rename_files(@old_name, @new_name)
+    rename_variables(@old_name, @new_name)
 
-function delete_run_this_first {
-  for F in bin/setup README.md; do
-    sed -i'' '/run_this_first/d' "$F"
-  done
-}
+    @copyright_holder = obtain_copyright_holder
+    edit_license
 
-function get_git_repo_name {
-  do
-    read -e -p "What do you want to call the new git repository for this gem? " -i "$GIT_REPO_NAME" GIT_REPO_NAME
-    if [[ -z "$GIT_REPO_NAME" ]]; then
-      echo "If you do not want to specify a git repo name, press Control-C, or try again."
-      unset GIT_REPO_NAME
-    fi
+    delete_run_this_first
 
-    if [[ "$( has_spaces $GIT_REPO_NAME )" ]]; then
-      echo "The git repo name must not contain spaces. Please try again."
-      unset GIT_REPO_NAME
-    fi
-  while [[ -z "$GIT_REPO_NAME" ]]
-  echo "$GIT_REPO_NAME"
-}
+    `git remote rename origin upstream`
 
-function create_repo {
-  # See https://cli.github.com/manual/gh_repo_create
-  if [[ "$( which gh )" ]]; then
-    gh repo create "$GIT_REPO_NAME" --public
-    echo "A public git repository called $GIT_REPO_NAME has been created. You can change its visibility before committing if you want."
-  fi
-}
+    @git_user_name = obtain_git_user_name
+    edit_readme
 
+    @git_user_name = obtain_git_user_name
+    create_repo @git_user_name
+  end
 
-function doit {
-  cd "$( git rev-parse --show-toplevel )"
+  def edit_contents(filename, edits)
+    contents = File.read(filename).gsub(%r!\w!, edits)
+    File.write(filename, contents)
+  end
 
-  export NEW_NAME="$( get_new_name )"
-  rename_files
-  rename_variables
+  def edit_license
+    edits = {
+      "2022"            => Date.today.year.to_s,
+      "COPYRIGHT_OWNER" => get_copyright_holder,
+    }
+    edit_contents(edits, "LICENSE.txt")
+  end
 
-  export COPYRIGHT_OWNER="$( get_copyright_holder )"
-  edit_license
+  def edit_readme
+    edits = { "git_user_name" => @git_user_name }
+    edit_contents(edits, "README.md")
+  end
 
-  delete_run_this_first
+  def obtain_copyright_holder
+    done = false
+    answer = ""
+    loop do
+      answer = ask("Please specify the name of the copyright holder for this Jekyll plugin:")
+      if answer.nil?
+        puts "You must specify a name. Please try again."
+      else
+        done = true
+      end
+      break if done
+    end
+    answer
+  end
 
-  git remote rename origin upstream
+  def obtain_git_repo_name
+    # do
+    #   read -e -p "What do you want to call the new git repository for this gem? " -i "$GIT_REPO_NAME" GIT_REPO_NAME
+    #   if [[ -z "$GIT_REPO_NAME" ]]; then
+    #     echo "If you do not want to specify a git repo name, press Control-C, or try again."
+    #     unset GIT_REPO_NAME
+    #   fi
 
-  export GIT_USER_NAME="$( get_git_user_name )"
-  edit_readme
+    #   if [[ "$( has_spaces $GIT_REPO_NAME )" ]]; then
+    #     echo "The git repo name must not contain spaces. Please try again."
+    #     unset GIT_REPO_NAME
+    #   fi
+    # while [[ -z "$GIT_REPO_NAME" ]]
+    # echo "$GIT_REPO_NAME"
+  end
 
-  export GIT_REPO_NAME="$( get_git_user_name )"
-  create_repo
-}
+  def obtain_git_user_name
+    # loop do
+    #   puts "What is your git user name? #{git_user_name}"
+    #   git_user_name = STDIN.gets.chomp.strip
+    #   if [[ -z "$GIT_USER_NAME" ]]; then
+    #     echo "You must specify a git user name. Please try again."
+    #     unset GIT_USER_NAME
+    #   fi
 
-# doit
+    #   if [[ "$( has_spaces $NEW_NAME )" ]]; then
+    #     echo "The name must not contain spaces. Please try again."
+    #     unset NEW_NAME
+    #   fi
+    # break if git_user_name
+    # end
+    # echo "$GIT_USER_NAME"
+  end
+
+  def obtain_new_name(new_name)
+    done = false
+    answer = ""
+    loop do
+      answer = ask("Please specify the name of this plugin in snake_case:", new_name)
+      if answer.nil?
+        puts "You must specify a name. Please try again."
+      elsif answer.include?(" ")
+        puts "The name must not contain spaces. Please try again."
+      else
+        done = true
+      end
+      break if done
+    end
+    answer
+  end
+
+  def help
+    puts <<~END_HELP
+      Rename the Jekyll template, including directories and files.
+    END_HELP
+    exit
+  end
+
+  def rename_directories(old_name, new_name)
+    Dir["**/*"]
+      .select { |x| x.is_directory? && x.include?(old_name) }
+      .each do |directory|
+        new_name = directory.gsub(old_name, new_name)
+        FileUtils.mv directory, new_name
+      end
+  end
+
+  def rename_files(old_name, new_name)
+    Dir["**/#{old_name}.*"]
+      .select(&:is_file?)
+      .each do |file|
+        filetype = File.basename(file, ".*")
+        FileUtils.mv(file, "#{new_name}.#{filetype}")
+      end
+  end
+
+  def rename_variables(old_name, new_name)
+    camel_case_old = to_camel_case(old_name)
+    camel_case_new = to_camel_case(new_name)
+    Dir["**/*.*"]
+      .select(&:is_file?)
+      .each do |filename|
+        edits = {
+          old_name       => new_name,
+          camel_case_old => camel_case_new,
+        }
+        edit_contents(filename, edits)
+      end
+  end
+
+  def run(command)
+    `#{command}`.chomp
+  end
+
+  def to_camel_case(string)
+    string.split("_").collect(&:capitalize).join
+  end
+
+  def verify_logged_in
+    unless run("which gh")
+      puts "gh is not installed, so you will have to push the new git repo to the hosting service of your choice"
+      if @prompt.yes?("Do you want to install it before continuing?")
+        puts "Be sure to run 'gh auth' to log in before rerunning this command."
+        system(OS.open_file_command, "https://cli.github.com/")
+        exit
+      end
+    end
+    run("gh auth login") unless run("gh auth status 2>&1").include?("Logged in to")
+  end
+end
+
+run_this_first = RunThisFirst.new
+# run_this_first.doit
+puts run_this_first.obtain_copyright_holder
+puts run_this_first.obtain_new_name("old_name")

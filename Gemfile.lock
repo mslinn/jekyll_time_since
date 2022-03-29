@@ -62,6 +62,8 @@ GEM
     parallel (1.21.0)
     parser (3.1.1.0)
       ast (~> 2.4.1)
+    pastel (0.8.0)
+      tty-color (~> 0.5)
     pathutil (0.16.2)
       forwardable-extended (~> 2.6)
     public_suffix (4.0.6)
@@ -106,7 +108,18 @@ GEM
     shellwords (0.1.0)
     terminal-table (2.0.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
+    tty-color (0.6.0)
+    tty-cursor (0.7.1)
+    tty-prompt (0.23.1)
+      pastel (~> 0.8)
+      tty-reader (~> 0.8)
+    tty-reader (0.9.0)
+      tty-cursor (~> 0.7)
+      tty-screen (~> 0.8)
+      wisper (~> 2.0)
+    tty-screen (0.8.1)
     unicode-display_width (1.8.0)
+    wisper (2.0.1)
 
 PLATFORMS
   x86_64-linux
@@ -119,6 +132,7 @@ DEPENDENCIES
   rspec
   rubocop (= 1.18.0)
   ruby-debug-ide
+  tty-prompt
 
 BUNDLED WITH
    2.3.7
