@@ -2,8 +2,6 @@
 [![Gem Version](https://badge.fury.io/rb/jekyll_block_tag_plugin_template.svg)](https://badge.fury.io/rb/jekyll_block_tag_plugin_template)
 ===========
 
-**TODO After cloning this repo, run `bin/run_this_first`, after which this line will automatically be deleted.**
-
 `jekyll_block_tag_plugin_template` is a Jekyll plugin that provides a new Liquid tag called `new_tag_name` and a new tag block called `new_tag_block_name`.
 The plugin is packaged as a Ruby gem.
 
