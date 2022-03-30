@@ -21,3 +21,6 @@ The customized gem is ready to be pushed to RubyGems.org, or any other Ruby gem 
      $ code .
      ```
   4) You can immediately use your new Jekyll plugin in a Jekyll website.
+
+## For More Information
+Please see the blog post about this {% href https://mslinn.com/blog/2022/03/28/jekyll-plugin-template-collection.html Jekyll plugin gem template %}.

@@ -13,4 +13,7 @@ RSpec.configure do |config|
   config.filter_run :focus
   config.order = "random"
   config.run_all_when_everything_filtered = true
+
+  # See https://manny.codes/7-ways-to-selectively-run-rspec-tests/#5-running-only-failing-tests
+  config.example_status_persistence_file_path = "spec/status_persistence.txt"
 end
