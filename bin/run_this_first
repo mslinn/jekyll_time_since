@@ -216,15 +216,16 @@ class RunThisFirst < ScriptHelper
   def rename_variables(old_name, new_name)
     camel_case_old = to_camel_case(old_name)
     camel_case_new = to_camel_case(new_name)
-    Dir["**/*.*"]
-      .select(&:is_file?)
-      .each do |filename|
-        edits = {
-          old_name       => new_name,
-          camel_case_old => camel_case_new,
-        }
-        edit_contents(filename, edits)
-      end
+    files = Dir["**/*.*"]
+    files.select!(&:is_file?)
+    files.reject! { |x| x.include?("/.git/") || x.include?("/pkg/") }
+    files.each do |filename|
+      edits = {
+        old_name       => new_name,
+        camel_case_old => camel_case_new,
+      }
+      edit_contents(filename, edits)
+    end
   end
 
   def verify_logged_in
@@ -235,7 +236,7 @@ class RunThisFirst < ScriptHelper
       MSG
       if @prompt.yes?("Do you want to install the gh cli before continuing?")
         puts "Be sure to run 'gh auth' to log in before rerunning this script."
-        system(OS.open_file_command, "https://cli.github.com/")
+        puts "See https://cli.github.com/"
         exit
       end
     end
