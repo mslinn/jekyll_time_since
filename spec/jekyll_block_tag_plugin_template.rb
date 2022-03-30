@@ -20,7 +20,7 @@ RSpec.describe(JekyllPluginBlockTagTemplate) do
     expect(options[:unknown]).to be_nil
   end
 
-  it "rename_variables"
+  it "rename_variables" do
     run_this_first = RunThisFirst.new
     run_this_first.rename_variables("old_variable_name", "new_variable_name")
     test_rb = File.read("spec/data/test.rb")
