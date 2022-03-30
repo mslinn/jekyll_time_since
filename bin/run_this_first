@@ -35,12 +35,12 @@ class ScriptHelper
   def to_camel_case(string)
     string.split("_").collect(&:capitalize).join
   end
-
 end
 
 class RunThisFirst < ScriptHelper
-  def initialize
-    super
+  def initialize(work_dir = Dir.pwd)
+    super()
+    Dir.chdir(work_dir)
     @old_name = "jekyll_block_tag_plugin_template"
   end
 
@@ -72,7 +72,7 @@ class RunThisFirst < ScriptHelper
     @new_name = obtain_new_name
     rename_directories(@old_name, @new_name)
     rename_files(@old_name, @new_name)
-    rename_variables(@old_name, @new_name)
+    rename_identifiers(@old_name, @new_name)
 
     @copyright_holder = obtain_copyright_holder
     edit_license
@@ -192,7 +192,7 @@ class RunThisFirst < ScriptHelper
       end
   end
 
-  def rename_variables(old_name, new_name)
+  def rename_identifiers(old_name, new_name)
     camel_case_old = to_camel_case(old_name)
     camel_case_new = to_camel_case(new_name)
     files = Dir["**/*.*"]
