@@ -2,12 +2,13 @@
 
 require "fileutils"
 require_relative "run_this_first_helper"
+load "bin/run_this_first"
 
-RSpec.describe(RunThisFirst) do
-  include RunThisFirst
+RSpec.describe(JekyllPluginTemplateModule) do
+  include JekyllPluginTemplateModule
 
   it "rename_identifiers" do
-    run_this_first = RunThisFirst.new(work_dir)
+    run_this_first = JekyllPluginTemplateModule::RunThisFirst.new(RSpec.configuration.work_dir)
     run_this_first.rename_identifiers("old_variable_name", "new_variable_name")
 
     gemspec = File.read("old_name.gemspec")
@@ -29,7 +30,7 @@ RSpec.describe(RunThisFirst) do
   end
 
   it "rename_files" do
-    run_this_first = RunThisFirst.new(work_dir)
+    run_this_first = JekyllPluginTemplateModule::RunThisFirst.new(RSpec.configuration.work_dir)
     run_this_first.rename_files("old_name", "new_name")
     expect(Dir["."]).to match_array[
       "new_name.gemspec",

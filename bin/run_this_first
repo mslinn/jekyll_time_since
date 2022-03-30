@@ -7,233 +7,234 @@ require "os"
 require "tty-prompt"
 require "git"
 
-class ScriptHelper
-  def initialize
-    @prompt = TTY::Prompt.new
-  end
-
-  def ask(prompt, default_value = nil)
-    if default_value
-      @prompt.ask(prompt, :value => default_value)
-    else
-      @prompt.ask(prompt)
+module JekyllPluginTemplateModule
+  class ScriptHelper
+    def initialize
+      @prompt = TTY::Prompt.new
     end
-  end
 
-  def edit_contents(filename, edits)
-    contents = File.read(filename)
-    edits.each do |old_str, new_str|
-      contents.gsub!(old_str, new_str)
-    end
-    File.write(filename, contents)
-  end
-
-  def run(command)
-    `#{command}`.chomp
-  end
-
-  def to_camel_case(string)
-    string.split("_").collect(&:capitalize).join
-  end
-end
-
-class RunThisFirst < ScriptHelper
-  def initialize(work_dir = Dir.pwd)
-    super()
-    Dir.chdir(work_dir)
-    @old_name = "jekyll_block_tag_plugin_template"
-  end
-
-  def create_repo
-    unless run("which gh")
-      puts "gh is not installed, so you will have to push the new git repo to the hosting service of your choice"
-      exit
-    end
-    unless run("gh auth status").include? "Logged in to github.com"
-      puts "gh is not logged in, so you will have to push the new git repo to the hosting service of your choice"
-    end
-    if @prompt.yes?("Create a GitHub project for this new git repository?")
-      visibility = @prompt.select("Public or private?", %w(public private))
-      `gh repo create #{@git_repo_name} --#{visibility}` # See https://cli.github.com/manual/gh_repo_create
-      puts "A #{visibility} git repository called #{git_repo_name} has been created."
-    end
-  end
-
-  def delete_run_this_first
-    File.rm "bin/run_this_first"
-    ["bin/setup", "README.md"].each do |filename|
-      modified = File.readlines(filename).reject { |f| %r!run_this_first!.match(f) }
-      File.write(filename, modified.join)
-    end
-  end
-
-  def delete_tests_and_data
-    File.rm_rf "spec/run_this_first*"
-  end
-
-  def edit_license
-    edits = {
-      "2022"            => Date.today.year.to_s,
-      "COPYRIGHT_OWNER" => get_copyright_holder,
-    }
-    edit_contents(edits, "LICENSE.txt")
-  end
-
-  def edit_readme
-    edits = { "git_user_name" => @git_user_name }
-    edit_contents(edits, "README.md")
-  end
-
-  def help
-    puts <<~END_HELP
-      This script customizes your new Jekyll plugin gem.
-      It does the following:
-       1) Renames the Jekyll template, including directories, files and contents.
-       2) Deletes itself, its tests and its test data.
-       3) Does not delete tests for the Jekyll plugin.
-       4) Removes information about itself from README.md
-       5) Initializes a new local git repository and optionally creates a public or private project on GitHub.
-       6) Provides scripts for building and testing your new Jekyll plugin gem locally.
-
-      The customized gem is ready to be pushed to RubyGems.org, or any other Ruby gem repository, whenever your feel ready.
-    END_HELP
-    exit
-  end
-
-  def obtain_copyright_holder
-    done = false
-    answer = ""
-    loop do
-      answer = ask("Please specify the name of the copyright holder for this Jekyll plugin:")
-      if answer.nil?
-        puts "You must specify a name. Please try again."
+    def ask(prompt, default_value = nil)
+      if default_value
+        @prompt.ask(prompt, :value => default_value)
       else
-        done = true
-      end
-      break if done
-    end
-    answer
-  end
-
-  def obtain_git_repo_name
-    git_repo_name = ""
-    want_name = @prompt.yes?("Do you want to give a name to the new git repository for this Jekyll plugin gem?")
-    return git_repo_name unless want_name
-
-    loop do
-      git_repo_name = ask("What name do you want to give to the git repo?", git_repo_name)
-      if git_repo_name.nil?
-        puts "You did not specify a name. Please try again."
-      elsif git_repo_name.include?(" ")
-        puts "The name must not contain spaces. Please try again."
-      else
-        break
+        @prompt.ask(prompt)
       end
     end
-    git_repo_name
-  end
 
-  def obtain_git_user_name
-    loop do
-      git_user_name = ask("What is your git user name?", git_user_name)
-      if git_user_name.nil?
-        puts "You did not specify a name. Please try again."
-      elsif git_user_name.include?(" ")
-        puts "The name must not contain spaces. Please try again."
-      else
-        break
+    def edit_contents(filename, edits)
+      contents = File.read(filename)
+      edits.each do |old_str, new_str|
+        contents.gsub!(old_str, new_str)
       end
+      File.write(filename, contents)
     end
-    git_user_name
-  end
 
-  def obtain_new_name(new_name)
-    answer = ""
-    loop do
-      answer = ask("Please specify the name of this plugin in snake_case:", new_name)
-      if answer.nil?
-        puts "You must specify a name. Please try again."
-      elsif answer.include?(" ")
-        puts "The name must not contain spaces. Please try again."
-      else
-        break
-      end
+    def run(command)
+      `#{command}`.chomp
     end
-    answer
-  end
 
-  def process
-    Dir.chdir `git rev-parse --show-toplevel`.chomp
-
-    @new_name = obtain_new_name
-    rename_directories(@old_name, @new_name)
-    rename_files(@old_name, @new_name)
-    rename_identifiers(@old_name, @new_name)
-
-    @copyright_holder = obtain_copyright_holder
-    edit_license
-
-    delete_run_this_first
-    delete_tests_and_data
-
-    `git remote rename origin upstream`
-
-    @git_user_name = obtain_git_user_name
-    edit_readme
-
-    @git_user_name = obtain_git_user_name
-    create_repo @git_user_name
-  end
-
-  def rename_directories(old_name, new_name)
-    Dir["**/*"]
-      .select { |x| File..directory?(x) && x.include?(old_name) }
-      .each do |directory|
-        new_name = directory.gsub(old_name, new_name)
-        FileUtils.mv directory, new_name
-      end
-  end
-
-  def rename_files(old_name, new_name)
-    Dir["**/#{old_name}.*"]
-      .select(&:is_file?)
-      .each do |file|
-        filetype = File.basename(file, ".*")
-        FileUtils.mv(file, "#{new_name}.#{filetype}")
-      end
-  end
-
-  def rename_identifiers(old_name, new_name)
-    camel_case_old = to_camel_case(old_name)
-    camel_case_new = to_camel_case(new_name)
-    files = Dir["**/*.*"]
-    files.select! { |x| File.file? x }
-    files.reject! { |x| x.include?("/.git/") || x.include?("/pkg/") }
-    files.each do |filename|
-      edits = {
-        old_name       => new_name,
-        camel_case_old => camel_case_new,
-      }
-      edit_contents(filename, edits)
+    def to_camel_case(string)
+      string.split("_").collect(&:capitalize).join
     end
   end
 
-  def verify_logged_in
-    if run("which gh").empty?
-      puts <<~MSG
-        This project needs to be pushed to a new git repo at a hosting service like GitHub.
-        The gh cli would need to be installed if you want this script to create a repo for you on GitHub.
-      MSG
-      if @prompt.yes?("Do you want to install the gh cli before continuing?")
-        puts "Be sure to run 'gh auth' to log in before rerunning this script."
-        puts "See https://cli.github.com/"
+  class RunThisFirst < ScriptHelper
+    def initialize(work_dir = Dir.pwd)
+      super()
+      Dir.chdir(work_dir)
+      @old_name = "jekyll_block_tag_plugin_template"
+    end
+
+    def create_repo
+      unless run("which gh")
+        puts "gh is not installed, so you will have to push the new git repo to the hosting service of your choice"
         exit
       end
+      unless run("gh auth status").include? "Logged in to github.com"
+        puts "gh is not logged in, so you will have to push the new git repo to the hosting service of your choice"
+      end
+      if @prompt.yes?("Create a GitHub project for this new git repository?")
+        visibility = @prompt.select("Public or private?", %w(public private))
+        `gh repo create #{@git_repo_name} --#{visibility}` # See https://cli.github.com/manual/gh_repo_create
+        puts "A #{visibility} git repository called #{git_repo_name} has been created."
+      end
     end
-    run("gh auth login") unless run("gh auth status 2>&1").include?("Logged in to")
+
+    def delete_run_this_first
+      File.rm "bin/run_this_first"
+      ["bin/setup", "README.md"].each do |filename|
+        modified = File.readlines(filename).reject { |f| %r!run_this_first!.match(f) }
+        File.write(filename, modified.join)
+      end
+    end
+
+    def delete_tests_and_data
+      File.rm_rf "spec/run_this_first*"
+    end
+
+    def edit_license
+      edits = {
+        "2022"            => Date.today.year.to_s,
+        "COPYRIGHT_OWNER" => get_copyright_holder,
+      }
+      edit_contents(edits, "LICENSE.txt")
+    end
+
+    def edit_readme
+      edits = { "git_user_name" => @git_user_name }
+      edit_contents(edits, "README.md")
+    end
+
+    def help
+      puts <<~END_HELP
+        This script customizes your new Jekyll plugin gem.
+        It does the following:
+        1) Renames the Jekyll template, including directories, files and contents.
+        2) Deletes itself, its tests and its test data.
+        3) Does not delete tests for the Jekyll plugin.
+        4) Removes information about itself from README.md
+        5) Initializes a new local git repository and optionally creates a public or private project on GitHub.
+        6) Provides scripts for building and testing your new Jekyll plugin gem locally.
+
+        The customized gem is ready to be pushed to RubyGems.org, or any other Ruby gem repository, whenever your feel ready.
+      END_HELP
+      exit
+    end
+
+    def obtain_copyright_holder
+      done = false
+      answer = ""
+      loop do
+        answer = ask("Please specify the name of the copyright holder for this Jekyll plugin:")
+        if answer.nil?
+          puts "You must specify a name. Please try again."
+        else
+          done = true
+        end
+        break if done
+      end
+      answer
+    end
+
+    def obtain_git_repo_name
+      git_repo_name = ""
+      want_name = @prompt.yes?("Do you want to give a name to the new git repository for this Jekyll plugin gem?")
+      return git_repo_name unless want_name
+
+      loop do
+        git_repo_name = ask("What name do you want to give to the git repo?", git_repo_name)
+        if git_repo_name.nil?
+          puts "You did not specify a name. Please try again."
+        elsif git_repo_name.include?(" ")
+          puts "The name must not contain spaces. Please try again."
+        else
+          break
+        end
+      end
+      git_repo_name
+    end
+
+    def obtain_git_user_name
+      loop do
+        git_user_name = ask("What is your git user name?", git_user_name)
+        if git_user_name.nil?
+          puts "You did not specify a name. Please try again."
+        elsif git_user_name.include?(" ")
+          puts "The name must not contain spaces. Please try again."
+        else
+          break
+        end
+      end
+      git_user_name
+    end
+
+    def obtain_new_name(new_name)
+      answer = ""
+      loop do
+        answer = ask("Please specify the name of this plugin in snake_case:", new_name)
+        if answer.nil?
+          puts "You must specify a name. Please try again."
+        elsif answer.include?(" ")
+          puts "The name must not contain spaces. Please try again."
+        else
+          break
+        end
+      end
+      answer
+    end
+
+    def process
+      Dir.chdir `git rev-parse --show-toplevel`.chomp
+
+      @new_name = obtain_new_name
+      rename_directories(@old_name, @new_name)
+      rename_files(@old_name, @new_name)
+      rename_identifiers(@old_name, @new_name)
+
+      @copyright_holder = obtain_copyright_holder
+      edit_license
+
+      delete_run_this_first
+      delete_tests_and_data
+
+      `git remote rename origin upstream`
+
+      @git_user_name = obtain_git_user_name
+      edit_readme
+
+      @git_user_name = obtain_git_user_name
+      create_repo @git_user_name
+    end
+
+    def rename_directories(old_name, new_name)
+      Dir["**/*"]
+        .select { |x| File..directory?(x) && x.include?(old_name) }
+        .each do |directory|
+          new_name = directory.gsub(old_name, new_name)
+          FileUtils.mv directory, new_name
+        end
+    end
+
+    def rename_files(old_name, new_name)
+      Dir["**/#{old_name}.*"]
+        .select(&:is_file?)
+        .each do |file|
+          filetype = File.basename(file, ".*")
+          FileUtils.mv(file, "#{new_name}.#{filetype}")
+        end
+    end
+
+    def rename_identifiers(old_name, new_name)
+      camel_case_old = to_camel_case(old_name)
+      camel_case_new = to_camel_case(new_name)
+      files = Dir["**/*.*"]
+      files.select! { |x| File.file? x }
+      files.reject! { |x| x.include?("/.git/") || x.include?("/pkg/") }
+      files.each do |filename|
+        edits = {
+          old_name       => new_name,
+          camel_case_old => camel_case_new,
+        }
+        edit_contents(filename, edits)
+      end
+    end
+
+    def verify_logged_in
+      if run("which gh").empty?
+        puts <<~MSG
+          This project needs to be pushed to a new git repo at a hosting service like GitHub.
+          The gh cli would need to be installed if you want this script to create a repo for you on GitHub.
+        MSG
+        if @prompt.yes?("Do you want to install the gh cli before continuing?")
+          puts "Be sure to run 'gh auth' to log in before rerunning this script."
+          puts "See https://cli.github.com/"
+          exit
+        end
+      end
+      run("gh auth login") unless run("gh auth status 2>&1").include?("Logged in to")
+    end
   end
 end
-
 # run_this_first = RunThisFirst.new
 # puts run_this_first.obtain_copyright_holder
 # puts run_this_first.obtain_new_name("old_name")

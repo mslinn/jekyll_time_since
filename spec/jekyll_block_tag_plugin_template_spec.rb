@@ -6,7 +6,7 @@ require "key_value_parser"
 require "shellwords"
 require_relative "../lib/jekyll_block_tag_plugin_template"
 
-RSpec.describe(RunThisFirst) do
+RSpec.describe(Jekyll::MyBlock) do
   include Jekyll::MyBlock
 
   it "parses arguments" do
