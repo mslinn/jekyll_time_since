@@ -21,7 +21,7 @@ RSpec.describe(JekyllPluginBlockTagTemplate) do
     expect(options[:unknown]).to be_nil
   end
 
-  it "rename_variables" do
+  xit "rename_variables" do
     load "bin/run_this_first"
     run_this_first = RunThisFirst.new
     run_this_first.rename_variables("old_variable_name", "new_variable_name")
