@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require "key_value_parser"
+require "fileutils"
 require "jekyll"
+require "key_value_parser"
 require "shellwords"
 require_relative "../lib/jekyll_block_tag_plugin_template"
 
@@ -21,6 +22,7 @@ RSpec.describe(JekyllPluginBlockTagTemplate) do
   end
 
   it "rename_variables" do
+    load "bin/run_this_first"
     run_this_first = RunThisFirst.new
     run_this_first.rename_variables("old_variable_name", "new_variable_name")
     test_rb = File.read("spec/data/test.rb")

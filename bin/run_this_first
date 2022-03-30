@@ -3,32 +3,8 @@
 # frozen_string_literal: true
 
 require "fileutils"
-
-# Install os if not already installed
-begin
-  gem "os"
-rescue Gem::LoadError
-  Gem.install("tty-prompt")
-  gem "tty-prompt"
-end
 require "os"
-
-# Install tty-prompt if not already installed
-begin
-  gem "tty-prompt"
-rescue Gem::LoadError
-  Gem.install("tty-prompt")
-  gem "tty-prompt"
-end
 require "tty-prompt"
-
-# Install git if not already installed
-begin
-  gem "git"
-rescue Gem::LoadError
-  Gem.install("git")
-  gem "git"
-end
 require "git"
 
 class ScriptHelper
@@ -197,7 +173,7 @@ class RunThisFirst < ScriptHelper
 
   def rename_directories(old_name, new_name)
     Dir["**/*"]
-      .select { |x| x.is_directory? && x.include?(old_name) }
+      .select { |x| File..directory?(x) && x.include?(old_name) }
       .each do |directory|
         new_name = directory.gsub(old_name, new_name)
         FileUtils.mv directory, new_name
@@ -217,7 +193,7 @@ class RunThisFirst < ScriptHelper
     camel_case_old = to_camel_case(old_name)
     camel_case_new = to_camel_case(new_name)
     files = Dir["**/*.*"]
-    files.select!(&:is_file?)
+    files.select! { |x| File.file? x }
     files.reject! { |x| x.include?("/.git/") || x.include?("/pkg/") }
     files.each do |filename|
       edits = {
@@ -244,8 +220,8 @@ class RunThisFirst < ScriptHelper
   end
 end
 
-run_this_first = RunThisFirst.new
+# run_this_first = RunThisFirst.new
 # puts run_this_first.obtain_copyright_holder
 # puts run_this_first.obtain_new_name("old_name")
-run_this_first.verify_logged_in
+# run_this_first.verify_logged_in
 # run_this_first.doit
