@@ -5,8 +5,6 @@ require_relative "run_this_first_helper"
 load "bin/run_this_first"
 
 RSpec.describe(JekyllPluginTemplateModule) do
-  include JekyllPluginTemplateModule
-
   it "rename_identifiers" do
     run_this_first = JekyllPluginTemplateModule::RunThisFirst.new(RSpec.configuration.work_dir)
     run_this_first.rename_identifiers("old_variable_name", "new_variable_name")
