@@ -21,7 +21,10 @@ class ScriptHelper
   end
 
   def edit_contents(filename, edits)
-    contents = File.read(filename).gsub(%r!\w!, edits)
+    contents = File.read(filename)
+    edits.each do |old_str, new_str|
+      contents.gsub!(old_str, new_str)
+    end
     File.write(filename, contents)
   end
 
