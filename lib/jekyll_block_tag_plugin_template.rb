@@ -19,12 +19,9 @@ end
 #
 # The Jekyll log level defaults to :info, which means all the Jekyll.logger statements below will not generate output.
 # You can control the log level when you start Jekyll.
-# To set the log level to :debug, pass the --verbose option, like this:
-#   bundle exec jekyll build --verbose
-#   JEKYLL_ENV=development bundle exec jekyll serve --verbose
-# To set the log level to :error, pass the --quiet option, like this:
-#   bundle exec jekyll build --quiet
-#   JEKYLL_ENV=development bundle exec jekyll serve --quiet
+# To set the log level to :debug, write an entery into _config.yml, like this:
+# plugin_loggers:
+#   MyBlock: debug
 
 module Jekyll
   # This class implements the Jekyll tag functionality

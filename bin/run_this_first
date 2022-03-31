@@ -69,7 +69,7 @@ module JekyllPluginTemplateModule
     end
 
     def delete_tests_and_data
-      File.rm_rf "spec/run_this_first*"
+      File.rm_rf "spec/runs_this_first*"
     end
 
     def edit_license
