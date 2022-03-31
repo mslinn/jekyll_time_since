@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jekyll_block_tag_plugin_template (0.1.0)
+    jekyll_block_tag_plugin_template (0.1.1)
       git
       jekyll (>= 3.5.0)
       jekyll_plugin_logger
@@ -17,7 +17,7 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.2)
     colorator (1.1.0)
-    concurrent-ruby (1.1.9)
+    concurrent-ruby (1.1.10)
     debase (0.2.4.1)
       debase-ruby_core_source (>= 0.10.2)
     debase-ruby_core_source (0.10.14)
@@ -55,7 +55,7 @@ GEM
     jekyll_plugin_logger (2.0.0)
       jekyll (>= 3.5.0)
     key-value-parser (0.0.2)
-    kramdown (2.3.1)
+    kramdown (2.3.2)
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
