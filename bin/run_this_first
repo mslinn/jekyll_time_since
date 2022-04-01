@@ -199,7 +199,7 @@ module JekyllPluginTemplateModule
 
     def rename_files(old_name, new_name)
       Dir["**/#{old_name}.*"]
-        .select(&:file?)
+        .select { |x| File.file? x }
         .each do |file|
           filetype = File.basename(file, ".*")
           FileUtils.mv(file, "#{new_name}.#{filetype}")
