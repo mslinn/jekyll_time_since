@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.required_ruby_version = ">= 2.6.0"
   spec.summary = "Write a short summary; RubyGems requires one."
-  spec.version = JekyllBlockTagTemplate::VERSION
+  spec.version = JekyllPluginTemplateVersion::VERSION
 
   spec.add_dependency "jekyll", ">= 3.5.0"
   spec.add_dependency "jekyll_plugin_logger"

@@ -35,7 +35,7 @@ module JekyllPluginHooks
   # This hook is triggered once per build / serve session.
   Jekyll::Hooks.register(:site, :after_init, :priority => :normal, :safe => true) do |_site|
     @logger = PluginMetaLogger.instance.new_logger(self)
-    @logger.info { "Loaded #{JekyllPluginHooksName::PLUGIN_NAME} v#{JekyllBlockTagTemplate::VERSION} plugin." }
+    @logger.info { "Loaded #{JekyllPluginHooksName::PLUGIN_NAME} v#{JekyllPluginTemplate::VERSION} plugin." }
     @logger.info { "Jekyll::Hooks.register(:site, :after_init) invoked." }
   end
 
