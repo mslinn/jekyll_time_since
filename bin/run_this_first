@@ -263,9 +263,9 @@ if __FILE__ == $PROGRAM_NAME
     old_name = "jekyll_block_tag_plugin_template"
     new_name = run_this_first.obtain_new_name(old_name)
 
+    run_this_first.rename_identifiers(old_name, new_name)
     run_this_first.rename_directories(old_name, new_name)
     run_this_first.rename_files(old_name, new_name)
-    run_this_first.rename_identifiers(old_name, new_name)
 
     # puts run_this_first.obtain_copyright_holder
     # run_this_first.verify_logged_in
