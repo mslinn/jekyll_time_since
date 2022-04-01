@@ -190,7 +190,7 @@ module JekyllPluginTemplateModule
 
     def rename_directories(old_name, new_name)
       Dir["**/*"]
-        .select { |x| File..directory?(x) && x.include?(old_name) }
+        .select { |x| File.directory?(x) && x.include?(old_name) }
         .each do |directory|
           new_name = directory.gsub(old_name, new_name)
           FileUtils.mv directory, new_name
