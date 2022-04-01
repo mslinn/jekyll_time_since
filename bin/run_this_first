@@ -193,7 +193,7 @@ module JekyllPluginTemplateModule
         .select { |x| File.directory?(x) && x.include?(old_name) }
         .each do |directory|
           renamed_directory = directory.gsub(old_name, new_name)
-          FileUtils.rename directory, renamed_directory
+          File.rename directory, renamed_directory
         end
     end
 
@@ -210,7 +210,7 @@ module JekyllPluginTemplateModule
       Dir["**/#{old_name}*.*"]
         .select { |x| File.file? x }
         .each do |path|
-          FileUtils.rename(path, rename_path(path, old_name, new_name))
+          File.rename(path, rename_path(path, old_name, new_name))
         end
     end
 
