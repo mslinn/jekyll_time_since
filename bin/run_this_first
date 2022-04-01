@@ -2,6 +2,7 @@
 
 # frozen_string_literal: true
 
+require "colorator"
 require "fileutils"
 require "os"
 require "tty-prompt"
@@ -15,9 +16,9 @@ module JekyllPluginTemplateModule
 
     def ask(prompt, default_value = nil)
       if default_value
-        @prompt.ask(prompt, :value => default_value)
+        @prompt.ask(prompt.cyan, :value => default_value)
       else
-        @prompt.ask(prompt)
+        @prompt.ask(prompt.cyan)
       end
     end
 
@@ -47,16 +48,16 @@ module JekyllPluginTemplateModule
 
     def create_repo
       unless run("which gh")
-        puts "gh is not installed, so you will have to push the new git repo to the hosting service of your choice"
+        puts "gh is not installed, so you will have to push the new git repo to the hosting service of your choice".red
         exit
       end
       unless run("gh auth status").include? "Logged in to github.com"
-        puts "gh is not logged in, so you will have to push the new git repo to the hosting service of your choice"
+        puts "gh is not logged in, so you will have to push the new git repo to the hosting service of your choice".red
       end
-      if @prompt.yes?("Create a GitHub project for this new git repository?")
+      if @prompt.yes?("Create a GitHub project for this new git repository?".cyan)
         visibility = @prompt.select("Public or private?", %w(public private))
         `gh repo create #{@git_repo_name} --#{visibility}` # See https://cli.github.com/manual/gh_repo_create
-        puts "A #{visibility} git repository called #{git_repo_name} has been created."
+        puts "A #{visibility} git repository called #{git_repo_name} has been created.".cyan
       end
     end
 
@@ -86,7 +87,7 @@ module JekyllPluginTemplateModule
     end
 
     def help
-      puts <<~END_HELP
+      msg = <<~END_HELP
         This script customizes your new Jekyll plugin gem.
         It does the following:
         1) Renames the Jekyll template, including directories, files and contents.
@@ -98,6 +99,7 @@ module JekyllPluginTemplateModule
 
         The customized gem is ready to be pushed to RubyGems.org, or any other Ruby gem repository, whenever your feel ready.
       END_HELP
+      msg.cyan
       exit
     end
 
@@ -107,7 +109,7 @@ module JekyllPluginTemplateModule
       loop do
         answer = ask("Please specify the name of the copyright holder for this Jekyll plugin:")
         if answer.nil?
-          puts "You must specify a name. Please try again."
+          puts "You must specify a name. Please try again.".red
         else
           done = true
         end
@@ -118,15 +120,15 @@ module JekyllPluginTemplateModule
 
     def obtain_git_repo_name
       git_repo_name = ""
-      want_name = @prompt.yes?("Do you want to give a name to the new git repository for this Jekyll plugin gem?")
+      want_name = @prompt.yes?("Do you want to give a name to the new git repository for this Jekyll plugin gem?".cyan)
       return git_repo_name unless want_name
 
       loop do
         git_repo_name = ask("What name do you want to give to the git repo?", git_repo_name)
         if git_repo_name.nil?
-          puts "You did not specify a name. Please try again."
+          puts "You did not specify a name. Please try again.".red
         elsif git_repo_name.include?(" ")
-          puts "The name must not contain spaces. Please try again."
+          puts "The name must not contain spaces. Please try again.".red
         else
           break
         end
@@ -138,9 +140,9 @@ module JekyllPluginTemplateModule
       loop do
         git_user_name = ask("What is your git user name?", git_user_name)
         if git_user_name.nil?
-          puts "You did not specify a name. Please try again."
+          puts "You did not specify a name. Please try again.".red
         elsif git_user_name.include?(" ")
-          puts "The name must not contain spaces. Please try again."
+          puts "The name must not contain spaces. Please try again.".red
         else
           break
         end
@@ -153,9 +155,9 @@ module JekyllPluginTemplateModule
       loop do
         answer = ask("Please specify the name of this plugin in snake_case:", new_name)
         if answer.nil?
-          puts "You must specify a name. Please try again."
+          puts "You must specify a name. Please try again.".red
         elsif answer.include?(" ")
-          puts "The name must not contain spaces. Please try again."
+          puts "The name must not contain spaces. Please try again.".red
         else
           break
         end
@@ -166,7 +168,7 @@ module JekyllPluginTemplateModule
     def process
       Dir.chdir `git rev-parse --show-toplevel`.chomp
 
-      @new_name = obtain_new_name
+      @new_name = obtain_new_name("jekyll_block_tag_plugin_template")
       rename_directories(@old_name, @new_name)
       rename_files(@old_name, @new_name)
       rename_identifiers(@old_name, @new_name)
@@ -221,13 +223,14 @@ module JekyllPluginTemplateModule
 
     def verify_logged_in
       if run("which gh").empty?
-        puts <<~MSG
+        msg = <<~MSG
           This project needs to be pushed to a new git repo at a hosting service like GitHub.
           The gh cli would need to be installed if you want this script to create a repo for you on GitHub.
         MSG
-        if @prompt.yes?("Do you want to install the gh cli before continuing?")
-          puts "Be sure to run 'gh auth' to log in before rerunning this script."
-          puts "See https://cli.github.com/"
+        puts msg.red
+        if @prompt.yes?("Do you want to install the gh cli before continuing?".cyan)
+          puts "Be sure to run 'gh auth' to log in before rerunning this script.".cyan
+          puts "See https://cli.github.com/".cyan
           exit
         end
       end
@@ -235,8 +238,31 @@ module JekyllPluginTemplateModule
     end
   end
 end
-# run_this_first = RunThisFirst.new
-# puts run_this_first.obtain_copyright_holder
-# puts run_this_first.obtain_new_name("old_name")
-# run_this_first.verify_logged_in
-# run_this_first.process
+
+# Invoke this code this way:
+# $ ruby bin/run_this_first
+if __FILE__ == $PROGRAM_NAME
+  require "pathname"
+  require "colorator"
+  begin
+    project_root = Pathname.new(__dir__).parent.to_s
+    puts "Executing from #{project_root}".cyan
+
+    include JekyllPluginTemplateModule # rubocop:disable Style/MixinUsage
+    run_this_first = RunThisFirst.new(project_root)
+    old_name = "jekyll_block_tag_plugin_template"
+    new_name = run_this_first.obtain_new_name(old_name)
+
+    run_this_first.rename_directories(old_name, new_name)
+    run_this_first.rename_files(old_name, new_name)
+    run_this_first.rename_identifiers(old_name, new_name)
+
+    # puts run_this_first.obtain_copyright_holder
+    # run_this_first.verify_logged_in
+    # run_this_first.process
+  rescue SystemExit, Interrupt
+    puts "Terminated".cyan
+  rescue StandardError => e
+    puts e.message.red
+  end
+end
