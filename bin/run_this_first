@@ -192,17 +192,25 @@ module JekyllPluginTemplateModule
       Dir["**/*"]
         .select { |x| File.directory?(x) && x.include?(old_name) }
         .each do |directory|
-          new_name = directory.gsub(old_name, new_name)
-          FileUtils.mv directory, new_name
+          renamed_directory = directory.gsub(old_name, new_name)
+          FileUtils.rename directory, renamed_directory
         end
     end
 
+    def rename_path(path, old_name, new_name)
+      dirname = File.dirname(path)
+      puts "dirname=#{dirname}"
+      dirname = dirname == "." ? "" : "#{dirname}/"
+      filetype = File.extname(path)
+      filename = File.basename(path).sub(filetype, "").sub(old_name, new_name)
+      "#{dirname}#{filename}#{filetype}"
+    end
+
     def rename_files(old_name, new_name)
-      Dir["**/#{old_name}.*"]
+      Dir["**/#{old_name}*.*"]
         .select { |x| File.file? x }
-        .each do |file|
-          filetype = File.basename(file, ".*")
-          FileUtils.mv(file, "#{new_name}.#{filetype}")
+        .each do |path|
+          FileUtils.rename(path, rename_path(path, old_name, new_name))
         end
     end
 
