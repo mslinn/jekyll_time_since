@@ -271,7 +271,7 @@ if __FILE__ == $PROGRAM_NAME
     # run_this_first.verify_logged_in
     # run_this_first.process
   rescue SystemExit, Interrupt
-    puts "Terminated".cyan
+    puts "\nTerminated".cyan
   rescue StandardError => e
     puts e.message.red
   end
