@@ -43,7 +43,7 @@ module JekyllPluginTemplateModule
     def initialize(work_dir = Dir.pwd)
       super()
       Dir.chdir(work_dir)
-      @old_name = "jekyll_block_tag_plugin_template"
+      @old_name = "jekyll_plugin_template"
     end
 
     def create_repo
@@ -168,7 +168,7 @@ module JekyllPluginTemplateModule
     def process
       Dir.chdir `git rev-parse --show-toplevel`.chomp
 
-      @new_name = obtain_new_name("jekyll_block_tag_plugin_template")
+      @new_name = obtain_new_name("jekyll_plugin_template")
       rename_directories(@old_name, @new_name)
       rename_files(@old_name, @new_name)
       rename_identifiers(@old_name, @new_name)
@@ -199,7 +199,6 @@ module JekyllPluginTemplateModule
 
     def rename_path(path, old_name, new_name)
       dirname = File.dirname(path)
-      puts "dirname=#{dirname}"
       dirname = dirname == "." ? "" : "#{dirname}/"
       filetype = File.extname(path)
       filename = File.basename(path).sub(filetype, "").sub(old_name, new_name)
@@ -260,8 +259,7 @@ if __FILE__ == $PROGRAM_NAME
     include JekyllPluginTemplateModule
 
     run_this_first = RunThisFirst.new(project_root)
-    old_name = "jekyll_block_tag_plugin_template"
-    # new_name = "jekyll_plugin_template"
+    old_name = "jekyll_plugin_template"
     new_name = run_this_first.obtain_new_name(old_name)
 
     run_this_first.rename_identifiers(old_name, new_name)

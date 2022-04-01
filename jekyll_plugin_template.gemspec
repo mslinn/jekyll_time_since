@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "lib/jekyll_block_tag_plugin_template/version"
+require_relative "lib/jekyll_plugin_template/version"
 
 # rubocop:disable Metrics/BlockLength
 Gem::Specification.new do |spec|
-  github = "https://github.com/mslinn/jekyll_block_tag_plugin_template"
+  github = "https://github.com/mslinn/jekyll_plugin_template"
 
   spec.authors = ["Firstname Lastname"]
   spec.bindir = "exe"
@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
     "homepage_uri"      => spec.homepage,
     "source_code_uri"   => github,
   }
-  spec.name = "jekyll_block_tag_plugin_template"
+  spec.name = "jekyll_plugin_template"
   spec.require_paths = ["lib"]
   spec.required_ruby_version = ">= 2.6.0"
   spec.summary = "Write a short summary; RubyGems requires one."

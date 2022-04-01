@@ -1,8 +1,8 @@
-`jekyll_block_tag_plugin_template`
-[![Gem Version](https://badge.fury.io/rb/jekyll_block_tag_plugin_template.svg)](https://badge.fury.io/rb/jekyll_block_tag_plugin_template)
+`jekyll_plugin_template`
+[![Gem Version](https://badge.fury.io/rb/jekyll_plugin_template.svg)](https://badge.fury.io/rb/jekyll_plugin_template)
 ===========
 
-`jekyll_block_tag_plugin_template` is a Jekyll plugin that provides a new Liquid tag called `new_tag_name` and a new tag block called `new_tag_block_name`.
+`jekyll_plugin_template` is a Jekyll plugin that provides a new Liquid tag called `new_tag_name` and a new tag block called `new_tag_block_name`.
 The plugin is packaged as a Ruby gem.
 
  * A `new_tag_block_name` block tag that can do magic with its eyes closed.
@@ -28,7 +28,7 @@ Add this line to your application's Gemfile:
 
 ```ruby
 group :jekyll_plugins do
-  gem 'jekyll_block_tag_plugin_template'
+  gem 'jekyll_plugin_template'
 end
 ```
 
@@ -38,7 +38,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install jekyll_block_tag_plugin_template
+    $ gem install jekyll_plugin_template
 
 
 ## Usage
@@ -62,20 +62,20 @@ $ rake install:local
 The following also does the same thing:
 ```shell
 $ bundle exec rake install
-jekyll_block_tag_plugin_template 0.1.0 built to pkg/jekyll_block_tag_plugin_template-0.1.0.gem.
-jekyll_block_tag_plugin_template (0.1.0) installed.
+jekyll_plugin_template 0.1.0 built to pkg/jekyll_plugin_template-0.1.0.gem.
+jekyll_plugin_template (0.1.0) installed.
 ```
 
 Examine the newly built gem:
 ```shell
-$ gem info jekyll_block_tag_plugin_template
+$ gem info jekyll_plugin_template
 
 *** LOCAL GEMS ***
 
-jekyll_block_tag_plugin_template (0.1.0)
+jekyll_plugin_template (0.1.0)
     Author: Firstname Lastname
     Homepage:
-    https://github.com/username/jekyll_block_tag_plugin_template
+    https://github.com/username/jekyll_plugin_template
     License: MIT
     Installed at: /home/mslinn/.gems
 

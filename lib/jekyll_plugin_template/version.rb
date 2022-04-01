@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-module JekyllBlockTagPluginTemplateVersion
+module JekyllPluginTemplateVersion
   VERSION = "0.1.2"
 end

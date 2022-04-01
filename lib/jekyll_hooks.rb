@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "jekyll_plugin_logger"
-require_relative "jekyll_block_tag_plugin_template/version"
+require_relative "jekyll_plugin_template/version"
 
 module JekyllPluginHooksName
   PLUGIN_NAME = "jekyll_plugin_hooks"

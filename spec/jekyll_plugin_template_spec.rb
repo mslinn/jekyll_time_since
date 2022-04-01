@@ -4,7 +4,7 @@ require "fileutils"
 require "jekyll"
 require "key_value_parser"
 require "shellwords"
-require_relative "../lib/jekyll_block_tag_plugin_template"
+require_relative "../lib/jekyll_plugin_template"
 
 RSpec.describe(Jekyll::MyBlock) do
   it "parses arguments" do

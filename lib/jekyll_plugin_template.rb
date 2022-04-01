@@ -3,7 +3,7 @@
 require "jekyll_plugin_logger"
 require "key_value_parser"
 require "shellwords"
-require_relative "jekyll_block_tag_plugin_template/version"
+require_relative "jekyll_plugin_template/version"
 
 module JekyllPluginBlockTagTemplate
   PLUGIN_NAME = "block_tag_template"
@@ -80,5 +80,5 @@ module Jekyll
   end
 end
 
-PluginMetaLogger.instance.info { "Loaded #{JekyllPluginBlockTagTemplate::PLUGIN_NAME} v#{JekyllBlockTagPluginTemplateVersion::VERSION} plugin." }
+PluginMetaLogger.instance.info { "Loaded #{JekyllPluginBlockTagTemplate::PLUGIN_NAME} v#{JekyllPluginTemplateVersion::VERSION} plugin." }
 Liquid::Template.register_tag(JekyllPluginBlockTagTemplate::PLUGIN_NAME, Jekyll::MyBlock)

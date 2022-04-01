@@ -4,7 +4,7 @@ load "bin/run_this_first"
 
 RSpec.configure do |config|
   config.add_setting :work_dir
-  config.work_dir = "/tmp/jekyll_block_tag_plugin_template"
+  config.work_dir = "/tmp/jekyll_plugin_template"
 
   config.after(:suite) do
     FileUtils.rm_rf(config.work_dir)
