@@ -217,7 +217,7 @@ module JekyllPluginTemplateModule
     def rename_identifiers(old_name, new_name)
       camel_case_old = to_camel_case(old_name)
       camel_case_new = to_camel_case(new_name)
-      files = Dir["**/*.*"]
+      files = Dir["**/*"]
       files.select! { |x| File.file? x }
       files.reject! { |x| x.include?("/.git/") || x.include?("/pkg/") }
       files.each do |filename|
@@ -261,6 +261,7 @@ if __FILE__ == $PROGRAM_NAME
 
     run_this_first = RunThisFirst.new(project_root)
     old_name = "jekyll_block_tag_plugin_template"
+    # new_name = "jekyll_plugin_template"
     new_name = run_this_first.obtain_new_name(old_name)
 
     run_this_first.rename_identifiers(old_name, new_name)
