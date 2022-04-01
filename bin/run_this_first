@@ -244,11 +244,13 @@ end
 if __FILE__ == $PROGRAM_NAME
   require "pathname"
   require "colorator"
+
   begin
     project_root = Pathname.new(__dir__).parent.to_s
     puts "Executing from #{project_root}".cyan
 
-    include JekyllPluginTemplateModule # rubocop:disable Style/MixinUsage
+    include JekyllPluginTemplateModule
+
     run_this_first = RunThisFirst.new(project_root)
     old_name = "jekyll_block_tag_plugin_template"
     new_name = run_this_first.obtain_new_name(old_name)
