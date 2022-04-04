@@ -22,5 +22,29 @@ The customized gem is ready to be pushed to RubyGems.org, or any other Ruby gem 
      ```
   4) You can immediately use your new Jekyll plugin in a Jekyll website.
 
+
 ## For More Information
 Please see the blog post about this {% href https://mslinn.com/blog/2022/03/28/jekyll-plugin-template-collection.html Jekyll plugin gem template %}.
+
+
+## Hook Call Order
+The Jekyll documentation does not say the exact order that hooks get called.
+However, this template makes that clear.
+Following is elided output; I removed duplicate log entries.
+Output will vary, depending on the Jekyll site that is processed.
+`:post_init`, in particular, gets called many times.
+```
+INFO Module: Jekyll::Hooks.register(:site, :after_reset) invoked.
+INFO Module: Jekyll::Hooks.register(:pages, :post_init) invoked.
+INFO Module: Jekyll::Hooks.register(:documents, :post_init) invoked.
+INFO Module: Jekyll::Hooks.register(:posts, :post_init) invoked.
+INFO Module: Jekyll::Hooks.register(:site, :post_read) invoked.
+INFO Module: Jekyll::Hooks.register(:pages, :post_init) invoked.
+INFO Module: Jekyll::Hooks.register(:site, :pre_render) invoked.
+INFO Module: Jekyll::Hooks.register(:pages, :pre_render) invoked.
+INFO Module: Jekyll::Hooks.register(:pages, :post_convert) invoked.
+INFO Module: Jekyll::Hooks.register(:pages, :post_render) invoked.
+INFO Module: Jekyll::Hooks.register(:site, :post_render) invoked.
+INFO Module: Jekyll::Hooks.register(:clean, :on_obsolete) invoked for [].
+INFO Module: Jekyll::Hooks.register(:pages, :post_write) invoked.
+```
