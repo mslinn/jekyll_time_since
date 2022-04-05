@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require_relative "lib/jekyll_plugin_template/version"
+require_relative "lib/jekyll_time_since/version"
 
 # rubocop:disable Metrics/BlockLength
 Gem::Specification.new do |spec|
-  github = "https://github.com/mslinn/jekyll_plugin_template"
+  github = "https://github.com/mslinn/jekyll_time_since"
 
-  spec.authors = ["Firstname Lastname"]
+  spec.authors = ["Michael Slinn"]
   spec.bindir = "exe"
   spec.description = <<~END_OF_DESC
-    Expand on what spec.summary says.
+  jekyll_time_since is a Jekyll plugin that provides new Liquid tags called years_since, months_since, days_since, hours_since, minutes_since and seconds_since.
   END_OF_DESC
   spec.email = ["email@email.com"]
 
@@ -26,11 +26,11 @@ Gem::Specification.new do |spec|
     "homepage_uri"      => spec.homepage,
     "source_code_uri"   => github,
   }
-  spec.name = "jekyll_plugin_template"
+  spec.name = "jekyll_time_since"
   spec.require_paths = ["lib"]
   spec.required_ruby_version = ">= 2.6.0"
-  spec.summary = "Write a short summary; RubyGems requires one."
-  spec.version = JekyllPluginTemplateVersion::VERSION
+  spec.summary = "jekyll_time_since is a Jekyll plugin that provides new Liquid tags called years_since, months_since, days_since, hours_since, minutes_since and seconds_since."
+  spec.version = JekyllTimeSinceVersion::VERSION
 
   spec.add_dependency "jekyll", ">= 3.5.0"
   spec.add_dependency "jekyll_plugin_logger"
