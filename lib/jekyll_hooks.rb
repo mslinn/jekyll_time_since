@@ -41,11 +41,11 @@ module JekyllPluginHooks
   # Called just after the site resets during regeneration
   # This is the first hook called, so this is the best place to define loggers
   Jekyll::Hooks.register(:site, :after_reset, :priority => :normal) do |_site|
-    @log_clean = PluginMetaLogger.instance.new_logger(:CleanHook, PluginMetaLogger.instance.config)
+    @log_clean = PluginMetaLogger.instance.new_logger(:CleanHook,     PluginMetaLogger.instance.config)
     @log_docs  = PluginMetaLogger.instance.new_logger(:DocumentHooks, PluginMetaLogger.instance.config)
-    @log_pages = PluginMetaLogger.instance.new_logger(:PageHooks, PluginMetaLogger.instance.config)
-    @log_posts = PluginMetaLogger.instance.new_logger(:PostHooks, PluginMetaLogger.instance.config)
-    @log_site  = PluginMetaLogger.instance.new_logger(:SiteHooks, PluginMetaLogger.instance.config)
+    @log_pages = PluginMetaLogger.instance.new_logger(:PageHooks,     PluginMetaLogger.instance.config)
+    @log_posts = PluginMetaLogger.instance.new_logger(:PostHooks,     PluginMetaLogger.instance.config)
+    @log_site  = PluginMetaLogger.instance.new_logger(:SiteHooks,     PluginMetaLogger.instance.config)
     @log_site.info { "Jekyll::Hooks.register(:site, :after_reset) invoked." }
   end
 
