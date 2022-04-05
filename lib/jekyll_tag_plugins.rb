@@ -32,7 +32,7 @@ module Jekyll
     # @return [void]
     def initialize(tag_name, argument_string, _parse_context)
       super
-      @logger = PluginMetaLogger.instance.new_logger(self)
+      @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
 
       argv = Shellwords.split(argument_string) # Scans name/value arguments
       params = KeyValueParser.new.parse(argv) # Extracts key/value pairs, default value for non-existant keys is nil

@@ -30,10 +30,10 @@
         "${workspaceRoot}"
       ],
       "cwd": "${workspaceRoot}",
-      "see": "https://relishapp.com/rspec/rspec-core/docs/command-line",
       "name": "RSpec - all",
       "program": "${env:HOME}/.gems/bin/rspec",
       "request": "launch",
+      "see": "https://relishapp.com/rspec/rspec-core/docs/command-line",
       "showDebuggerOutput": false,
       "type": "Ruby",
       "useBundler": true,
@@ -51,7 +51,7 @@
       "see": "https://relishapp.com/rspec/rspec-core/docs/command-line",
       "showDebuggerOutput": false,
       "type": "Ruby",
-      "useBundler": true,
+      "useBundler": false,
     }
   ]
 }
