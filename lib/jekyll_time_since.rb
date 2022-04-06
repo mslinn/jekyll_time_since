@@ -90,6 +90,10 @@ module TimeSince
     ((date2 - date1).to_f / 365 * 12).round
   end
 
+  def weeks_since(string)
+    days_since(string) / 7
+  end
+
   def days_since(string)
     hours_since(string) / 24
   end
@@ -103,9 +107,10 @@ module TimeSince
   end
 
   def seconds_since(string)
+    string += "-01-01" unless string.include?("-")
     (Time.new - Time.parse(string)).to_i
   end
 end
 
 PluginMetaLogger.instance.info { "Loaded #{JekyllTimeSinceName::PLUGIN_NAME} v#{JekyllTimeSinceVersion::VERSION} plugin." }
-Liquid::Template.register_tag(JekyllTimeSinceName::PLUGIN_NAME, Jekyll::TimeSince)
+Liquid::Template.register_tag(JekyllTimeSinceName::PLUGIN_NAME, TimeSince)
