@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 require "jekyll"
-require "fileutils"
-require "key_value_parser"
-require "shellwords"
-
 require_relative "../lib/jekyll_time_since"
 
 Jekyll.logger.log_level = :info

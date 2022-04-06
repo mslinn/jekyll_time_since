@@ -5,14 +5,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "args": ["/tmp/jekyll_block_tag_plugin_template"],
-      "console": "externalTerminal",
-      "name": "Debug run_this_first",
-      "program": "${workspaceRoot}/bin/run_this_first",
-      "type": "Ruby",
-      "request": "launch",
-    },
-    {
       "cwd": "${workspaceRoot}",
       "name": "Attach rdebug-ide",
       "request": "attach",

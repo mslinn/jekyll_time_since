@@ -5,7 +5,7 @@ require "time"
 require_relative "jekyll_time_since/version"
 
 module JekyllTimeSinceName
-  PLUGIN_NAME = "block_tag_template"
+  PLUGIN_NAME = "jekyll_time_since"
 end
 
 # These tags all work in a similar manner; they accept one parameter,
