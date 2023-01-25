@@ -17,6 +17,7 @@
 /spec/reports/
 Notepad++/
 __MACOSX
+exe/
 out/
 pkg/
 project/

@@ -26,10 +26,6 @@ And then execute:
 
     $ bundle install
 
-Or install it yourself as:
-
-    $ gem install jekyll_time_since
-
 
 ## Usage
 
@@ -42,40 +38,40 @@ The date and time strings can be surrounded with quotes, double quotes, or not.
 Time zone can be omitted, or specified as GMT, Z, or +/- HHMM.
 
 ```
-{% "1959" | years_since  %} {% '1959' | years_since %}
-{% "1959-02-03" | years_since %} {% '1959-02-03' | years_since %}
-{% "1959-02-03T01:02" | years_since %} {% '1959-02-03T01:02' | years_since %}
-{% "1959-02-03T01:02:00Z" | years_since %} {% "1959-02-03T01:02:00-0400" | years_since %}
+{{ "1959" | years_since  }} {{ '1959' | years_since }}
+{{ "1959-02-03" | years_since }} {{ '1959-02-03' | years_since }}
+{{ "1959-02-03T01:02" | years_since }} {{ '1959-02-03T01:02' | years_since }}
+{{ "1959-02-03T01:02:00Z" | years_since }} {{ "1959-02-03T01:02:00-0400" | years_since }}
 
-{% "1959" | months_since %} {% months_since '1959' %}
-{% "1959-02-03" months_since %} {% '1959-02-03' | months_since %}
-{% "1959-02-03T01:02" | months_since %} {% '1959-02-03T01:02' | months_since %}
-{% "1959-02-03T01:02:00Z" | months_since %} {% "1959-02-03T01:02:00-0400" | months_since %}
+{{ "1959" | months_since }} {{ months_since '1959' }}
+{{ "1959-02-03" months_since }} {{ '1959-02-03' | months_since }}
+{{ "1959-02-03T01:02" | months_since }} {{ '1959-02-03T01:02' | months_since }}
+{{ "1959-02-03T01:02:00Z" | months_since }} {{ "1959-02-03T01:02:00-0400" | months_since }}
 
-{% "1959" | weeks_since %} {% '1959' | weeks_since %}
-{% "1959-02-03" | weeks_since %} {% '1959-02-03' | weeks_since %}
-{% "1959-02-03T01:02" | weeks_since %} {% '1959-02-03T01:02' | weeks_since %}
-{% "1959-02-03T01:02:00Z" | weeks_since %} {% "1959-02-03T01:02:00-0400" | weeks_since %}
+{{ "1959" | weeks_since }} {{ '1959' | weeks_since }}
+{{ "1959-02-03" | weeks_since }} {{ '1959-02-03' | weeks_since }}
+{{ "1959-02-03T01:02" | weeks_since }} {{ '1959-02-03T01:02' | weeks_since }}
+{{ "1959-02-03T01:02:00Z" | weeks_since }} {{ "1959-02-03T01:02:00-0400" | weeks_since }}
 
-{% "1959" | days_since %} {% '1959' | days_since %}
-{% "1959-02-03" | days_since %} {% '1959-02-03' | days_since %}
-{% "1959-02-03T01:02" | days_since %} {% '1959-02-03T01:02' | days_since %}
-{% "1959-02-03T01:02:00Z" | days_since %} {% "1959-02-03T01:02:00-0400" | days_since %}
+{{ "1959" | days_since }} {{ '1959' | days_since }}
+{{ "1959-02-03" | days_since }} {{ '1959-02-03' | days_since }}
+{{ "1959-02-03T01:02" | days_since }} {{ '1959-02-03T01:02' | days_since }}
+{{ "1959-02-03T01:02:00Z" | days_since }} {{ "1959-02-03T01:02:00-0400" | days_since }}
 
-{% "1959" | hours_since%} {% '1959' | hours_since %}
-{% "1959-02-03" | hours_since %} {% '1959-02-03' | hours_since %}
-{% "1959-02-03T01:02" | hours_since %} {% '1959-02-03T01:02' | hours_since %}
-{% "1959-02-03T01:02:00Z" | hours_since %} {% "1959-02-03T01:02:00-0400" | hours_since %}
+{{ "1959" | hours_since}} {{ '1959' | hours_since }}
+{{ "1959-02-03" | hours_since }} {{ '1959-02-03' | hours_since }}
+{{ "1959-02-03T01:02" | hours_since }} {{ '1959-02-03T01:02' | hours_since }}
+{{ "1959-02-03T01:02:00Z" | hours_since }} {{ "1959-02-03T01:02:00-0400" | hours_since }}
 
-{% "1959" | minutes_since %} {% '1959' | minutes_since %}
-{% "1959-02-03" | minutes_since %} {% '1959-02-03' | minutes_since %}
-{% "1959-02-03T01:02" | minutes_since %} {% '1959-02-03T01:02' | minutes_since %}
-{% "1959-02-03T01:02:00Z" | minutes_since %} {% "1959-02-03T01:02:00-0400" | minutes_since %}
+{{ "1959" | minutes_since }} {{ '1959' | minutes_since }}
+{{ "1959-02-03" | minutes_since }} {{ '1959-02-03' | minutes_since }}
+{{ "1959-02-03T01:02" | minutes_since }} {{ '1959-02-03T01:02' | minutes_since }}
+{{ "1959-02-03T01:02:00Z" | minutes_since }} {{ "1959-02-03T01:02:00-0400" | minutes_since }}
 
-{% "1959" | seconds_since %} {% '1959' | seconds_since %}
-{% "1959-02-03" | seconds_since %} {% '1959-02-03' | seconds_since %}
-{% "1959-02-03T01:02" | seconds_since %} {% '1959-02-03T01:02' | seconds_since %}
-{% seconds_since "1959-02-03T01:02:00" %} {% seconds_since '1959-02-03T01:02:00' %}
+{{ "1959" | seconds_since }} {{ '1959' | seconds_since }}
+{{ "1959-02-03" | seconds_since }} {{ '1959-02-03' | seconds_since }}
+{{ "1959-02-03T01:02" | seconds_since }} {{ '1959-02-03T01:02' | seconds_since }}
+{{ seconds_since "1959-02-03T01:02:00" }} {{ seconds_since '1959-02-03T01:02:00' }}
 ```
 
 
