@@ -5,11 +5,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "args": ["1956-10-15"],
+      "args": ["week", "1956-10-15"],
       "console": "integratedTerminal",
       "justMyCode": true,
-      "name": "Python: years_since.py",
-      "program": "bin/years_since.py",
+      "name": "Python: time_since.py",
+      "program": "bin/time_since.py",
       "type": "python",
       "request": "launch",
     },
