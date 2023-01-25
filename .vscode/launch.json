@@ -5,6 +5,23 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "args": ["1956-10-15"],
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "name": "Python: years_since.py",
+      "program": "bin/years_since.py",
+      "type": "python",
+      "request": "launch",
+    },
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
       "cwd": "${workspaceRoot}",
       "name": "Attach rdebug-ide",
       "request": "attach",
