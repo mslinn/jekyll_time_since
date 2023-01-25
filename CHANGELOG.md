@@ -1,3 +1,6 @@
+## 0.1.2 / 2023-01-25
+  * Fixed return value
+
 ## 0.1.1 / 2022-04-05
   * Added weeks_since
   * Fixed parse error in seconds_since

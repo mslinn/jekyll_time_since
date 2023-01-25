@@ -15,9 +15,6 @@ RSpec.describe(TimeSince) do
     expect(py_time('month', '1956-01-01')).to eq(months_since('1956'))
     expect(py_time('month', '1956-10-15')).to eq(months_since('1956-10-15'))
 
-    _x = py_time('week', '1956-01-01')
-    _y = weeks_since('1956')
-
     expect(py_time('week', '1956-01-01')).to eq(weeks_since('1956'))
     expect(py_time('week', '1956-10-15')).to eq(weeks_since('1956-10-15'))
   end

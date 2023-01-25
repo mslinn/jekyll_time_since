@@ -12,5 +12,5 @@ Layout/LineLength:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-# Gemspec/RequireMFA:
-#   Enabled: false
+Style/MutableConstant:
+  Enabled: false
