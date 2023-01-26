@@ -1,0 +1,41 @@
+---
+description: jekyll_time_since plugin usage examples.
+date: 2023-01-26
+last_modified_at: 2023-01-26
+layout: default
+title: The Day The Music Died
+---
+<pre>{% raw %}{{ "1959" | years_since  }}{% endraw %}: {{ "1959" | years_since  }}
+{% raw %}{{ "1959-02-03" | years_since }}{% endraw %}: {{ "1959-02-03" | years_since }}
+{% raw %}{{ "1959-02-03T01:02" | years_since }}{% endraw %}: {{ "1959-02-03T01:02" | years_since }}
+{% raw %}{{ "1959-02-03T01:02:00Z" | years_since }}{% endraw %}: {{ "1959-02-03T01:02:00Z" | years_since }}
+
+{% raw %}{{ "1959" | months_since }}{% endraw %}: {{ "1959" | months_since }}
+{% raw %}{{ "1959-02-03" | months_since }}{% endraw %}: {{ "1959-02-03" | months_since }}
+{% raw %}{{ "1959-02-03T01:02" | months_since }}{% endraw %}: {{ "1959-02-03T01:02" | months_since }}
+{% raw %}{{ "1959-02-03T01:02:00Z" | months_since }}{% endraw %}: {{ "1959-02-03T01:02:00Z" | months_since }}
+
+{% raw %}{{ "1959" | weeks_since }}{% endraw %}: {{ "1959" | weeks_since }}
+{% raw %}{{ "1959-02-03" | weeks_since }}{% endraw %}: {{ "1959-02-03" | weeks_since }}
+{% raw %}{{ "1959-02-03T01:02" | weeks_since }}{% endraw %}: {{ "1959-02-03T01:02" | weeks_since }}
+{% raw %}{{ "1959-02-03T01:02:00Z" | weeks_since }}{% endraw %}: {{ "1959-02-03T01:02:00Z" | weeks_since }}
+
+{% raw %}{{ "1959" | days_since }}{% endraw %}: {{ "1959" | days_since }}
+{% raw %}{{ "1959-02-03" | days_since }}{% endraw %}: {{ "1959-02-03" | days_since }}
+{% raw %}{{ "1959-02-03T01:02" | days_since }}{% endraw %}: {{ "1959-02-03T01:02" | days_since }}
+{% raw %}{{ "1959-02-03T01:02:00Z" | days_since }}{% endraw %}: {{ "1959-02-03T01:02:00Z" | days_since }}
+
+{% raw %}{{ "1959" | hours_since}}{% endraw %}: {{ "1959" | hours_since}}
+{% raw %}{{ "1959-02-03" | hours_since }}{% endraw %}: {{ "1959-02-03" | hours_since }}
+{% raw %}{{ "1959-02-03T01:02" | hours_since }}{% endraw %}: {{ "1959-02-03T01:02" | hours_since }}
+{% raw %}{{ "1959-02-03T01:02:00Z" | hours_since }}{% endraw %}: {{ "1959-02-03T01:02:00Z" | hours_since }}
+
+{% raw %}{{ "1959" | minutes_since }}{% endraw %}: {{ "1959" | minutes_since }}
+{% raw %}{{ "1959-02-03" | minutes_since }}{% endraw %}: {{ "1959-02-03" | minutes_since }}
+{% raw %}{{ "1959-02-03T01:02" | minutes_since }}{% endraw %}: {{ "1959-02-03T01:02" | minutes_since }}
+{% raw %}{{ "1959-02-03T01:02:00Z" | minutes_since }}{% endraw %}: {{ "1959-02-03T01:02:00Z" | minutes_since }}
+
+{% raw %}{{ "1959" | seconds_since }}{% endraw %}: {{ "1959" | seconds_since }}
+{% raw %}{{ "1959-02-03" | seconds_since }}{% endraw %}: {{ "1959-02-03" | seconds_since }}
+{% raw %}{{ "1959-02-03T01:02" | seconds_since }}{% endraw %}: {{ "1959-02-03T01:02" | seconds_since }}
+{% raw %}{{ "1959-02-03T01:02:00" | seconds_since }}{% endraw %}: {{ "1959-02-03T01:02:00" | seconds_since }}</pre>

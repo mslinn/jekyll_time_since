@@ -1,3 +1,7 @@
+## 0.1.3 / 2023-01-26
+  * Fixed registration
+  * Improved testing
+
 ## 0.1.2 / 2023-01-25
   * Fixed return value
 
