@@ -2,7 +2,7 @@ require 'date'
 require_relative '../lib/jekyll_time_since'
 
 RSpec.describe(TimeSince) do
-  include TimeSince
+  include described_class
 
   def py_time(unit, date)
     `python3 bin/time_since.py #{unit} #{date}`.strip.to_i
