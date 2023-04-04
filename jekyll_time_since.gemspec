@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files = Dir['.rubocop.yml', 'LICENSE.*', 'Rakefile', '{lib,spec}/**/*', '*.gemspec', '*.md']
 
-  spec.homepage = 'https://www.mslinn.com/blog/2020/12/30/jekyll-plugin-template-collection.html'
+  spec.homepage = 'https://www.mslinn.com/jekyll/3000-jekyll-plugins.html#time_since'
   spec.license = 'MIT'
   spec.metadata = {
     'allowed_push_host' => 'https://rubygems.org',
