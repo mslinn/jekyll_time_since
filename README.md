@@ -2,14 +2,14 @@
 [![Gem Version](https://badge.fury.io/rb/jekyll_time_since.svg)](https://badge.fury.io/rb/jekyll_time_since)
 ===========
 
-`jekyll_time_since` is a Jekyll plugin that provides new Liquid tags called
+`jekyll_time_since` is a Jekyll plugin that provides new Liquid filters called
 `years_since`, `months_since`, `days_since`, `hours_since`, `minutes_since` and `seconds_since`.
 The plugin is packaged as a Ruby gem.
 
 
 ## Additional Information
 More information is available on Mike Slinn's web site about
-[Jekyll plugins](https://www.mslinn.com/blog/index.html#Jekyll).
+[Jekyll plugins](https://github.com/mslinn/jekyll_time_since).
 
 
 ## Installation
@@ -24,7 +24,7 @@ end
 
 And then execute:
 
-    $ bundle install
+    $ bundle
 
 
 ## Usage
@@ -85,7 +85,7 @@ You can also run `bin/console` for an interactive prompt that will allow you to 
 ### Build and Install Locally
 To build and install this gem onto your local machine, run:
 ```shell
-$ rake install:local
+$ rake install
 ```
 
 The following also does the same thing:
