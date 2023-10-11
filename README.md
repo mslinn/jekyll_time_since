@@ -1,6 +1,4 @@
-`jekyll_time_since`
-[![Gem Version](https://badge.fury.io/rb/jekyll_time_since.svg)](https://badge.fury.io/rb/jekyll_time_since)
-===========
+# `jekyll_time_since` [![Gem Version](https://badge.fury.io/rb/jekyll_time_since.svg)](https://badge.fury.io/rb/jekyll_time_since)
 
 `jekyll_time_since` is a Jekyll plugin that provides new Liquid filters called
 `years_since`, `months_since`, `days_since`, `hours_since`, `minutes_since` and `seconds_since`.
@@ -8,6 +6,7 @@ The plugin is packaged as a Ruby gem.
 
 
 ## Additional Information
+
 More information is available on Mike Slinn's web site about
 [Jekyll plugins](https://github.com/mslinn/jekyll_time_since).
 
@@ -24,7 +23,9 @@ end
 
 And then execute:
 
-    $ bundle
+```shell
+$ bundle
+```
 
 
 ## Usage
@@ -37,7 +38,7 @@ Just a year can be specified, which implies Jan 1 at midnight.
 The date and time strings can be surrounded with quotes, double quotes, or not.
 Time zone can be omitted, or specified as GMT, Z, or +/- HHMM.
 
-```
+```html
 {{ "1959" | years_since  }} {{ '1959' | years_since }}
 {{ "1959-02-03" | years_since }} {{ '1959-02-03' | years_since }}
 {{ "1959-02-03T01:02" | years_since }} {{ '1959-02-03T01:02' | years_since }}
@@ -83,12 +84,15 @@ You can also run `bin/console` for an interactive prompt that will allow you to 
 
 
 ### Build and Install Locally
+
 To build and install this gem onto your local machine, run:
+
 ```shell
 $ rake install
 ```
 
 The following also does the same thing:
+
 ```shell
 $ bundle exec rake install
 jekyll_time_since 0.1.0 built to pkg/jekyll_time_since-0.1.0.gem.
@@ -96,6 +100,7 @@ jekyll_time_since (0.1.0) installed.
 ```
 
 Examine the newly built gem:
+
 ```shell
 $ gem info jekyll_time_since
 
@@ -112,13 +117,17 @@ jekyll_time_since (0.1.0)
 
 
 ### Build and Push to RubyGems
+
 To release a new version,
+
   1. Update the version number in `version.rb`.
   2. Commit all changes to git; if you don't the next step might fail with an unexplainable error message.
   3. Run the following:
+
      ```shell
      $ bundle exec rake release
      ```
+
      The above creates a git tag for the version, commits the created tag,
      and pushes the new `.gem` file to [RubyGems.org](https://rubygems.org).
 
