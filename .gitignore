@@ -12,12 +12,16 @@
 .bundle/
 .idea
 .idea*
+.jekyll-cache/
+.jekyll-metadata
 .yardoc
 .yardoc/
 /spec/reports/
+Gemfile.lock
 Notepad++/
 __MACOSX
-exe/
+_site/
+binstub/
 out/
 pkg/
 project/
@@ -25,7 +29,3 @@ spec/status_persistence.txt
 target/
 tmp/
 ~*
-Gemfile.lock
-.jekyll-cache/
-.jekyll-metadata
-_site/

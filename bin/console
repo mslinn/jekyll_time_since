@@ -2,6 +2,7 @@
 
 require 'fileutils'
 require 'bundler/setup'
+require 'irb'
 
 gemspec_name = 'jekyll_time_since.gemspec'
 lines = File.readlines(gemspec_name, chomp: true)
@@ -21,5 +22,4 @@ require gemspec_name.delete_suffix '.gemspec'
 # require 'pry'
 # Pry.start
 
-require 'irb'
 IRB.start(__FILE__)

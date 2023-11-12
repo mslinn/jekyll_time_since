@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'jekyll'
+gem 'jekyll', '>= 4.3.2'
 
 group :jekyll_plugins do
   gem 'classifier-reborn'
@@ -8,6 +8,7 @@ group :jekyll_plugins do
   gem 'jekyll-environment-variables'
   gem 'jekyll-tagging'
   gem 'jekyll_time_since', path: '../'
+  gem 'kramdown'
 end
 
 group :test, :development do
@@ -19,5 +20,4 @@ group :test, :development do
   gem 'rubocop-performance', require: false
   gem 'rubocop-rake', require: false
   gem 'rubocop-rspec', require: false
-  gem 'ruby-debug-ide', require: false
 end
