@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.1.4 / 2025-02-07
+
+* Added `.vscode/extensions.json`
+* Corrected `ruby.rubocop.executePath` in `.vscode/settings.json`
+* Updated scripts in `bin` and `demo/bin` to match those in other plugins.
+
 ## 0.1.3 / 2023-01-26
 
 * Fixed registration

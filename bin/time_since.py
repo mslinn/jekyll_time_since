@@ -2,8 +2,6 @@ import datetime
 import sys
 from dateutil.parser import parse
 
-# pip install python-dateutil
-
 from dateutil import rrule
 import datetime
 
