@@ -1,9 +1,6 @@
-import datetime
-import sys
+import datetime, dateutil
 from dateutil.parser import parse
-
-from dateutil import rrule
-import datetime
+import sys
 
 def weeks_since(datetime):
     today = datetime.today()

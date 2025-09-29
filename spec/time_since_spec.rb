@@ -1,7 +1,7 @@
 require 'date'
-require_relative '../lib/jekyll_time_since'
+require_relative 'spec_helper'
 
-RSpec.describe(TimeSince) do
+RSpec.describe(Jekyll::TimeSince) do
   include described_class
 
   def py_time(unit, date)

@@ -34,3 +34,9 @@ for X in debug jekyll rake rspec-core rubocop; do
 done
 
 bundle audit check
+
+# Install rspec dependency
+if ! pip show python-dateutil > /dev/null 2>&1; then
+  echo "Installing dateutil Python package"
+  pip install python-dateutil
+fi

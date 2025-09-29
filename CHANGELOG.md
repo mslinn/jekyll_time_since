@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.1.5 / 2025-09-29
+
+* Fixed rspec tests
+
+
 ## 0.1.4 / 2025-02-07
 
 * Added `.vscode/extensions.json`
