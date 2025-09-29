@@ -28,13 +28,12 @@ module Jekyll
       years
     end
 
-    def months_since(string)
-      string += '-01-01' unless string.include?('-')
-      date1 = Date.parse(string)
-
-      date2 = Time.new.to_date
-      months = ((date2 - date1).to_f / 365 * 12).round
-      months -= 1 if date2.day > date1.day
+    def months_since(date_str)
+      date_str += '-01-01' unless date_str.include?('-')
+      date = Date.parse(date_str)
+      now = Date.today
+      months = ((now.year - date.year) * 12) + (now.month - date.month)
+      months -= 1 if now.day < date.day
       months
     end
 

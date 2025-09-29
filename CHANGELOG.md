@@ -3,6 +3,7 @@
 ## 0.1.5 / 2025-09-29
 
 * Fixed rspec tests
+* Fixed months_since to handle corner cases
 
 
 ## 0.1.4 / 2025-02-07
